@@ -16,7 +16,7 @@ def generate_launch_description():
     # ================================================================
     # Fixed configuration
     # ================================================================
-    robot_model = 'robot_arm/my_simple_robot.urdf'
+    robot_model = 'rubot/rubot_mecanum.urdf.xacro'
 
     mecanum_serial_port = '/dev/ttyACM0'
     rplidar_serial_port = '/dev/ttyUSB0'

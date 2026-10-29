@@ -288,7 +288,7 @@
   <joint name="base_scan_joint" type="fixed">
     <parent link="base_link"/>
     <child link="base_scan"/>
-    <origin rpy="0 0 3.14" xyz="0 0 0.13"/>
+    <origin rpy="0 0 0" xyz="0 0 0.13"/>
   </joint>
   <gazebo reference="base_scan">
     <sensor name="lidar" type="ray">

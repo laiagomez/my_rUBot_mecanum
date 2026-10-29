@@ -31,6 +31,7 @@ setup(
             'rubot_identification_yolo_det_exec = my_robot_ai_identification.rubot_identification_yolo_det:main',
             'rubot_identification_yolo_cls_exec = my_robot_ai_identification.rubot_identification_yolo_cls:main',
             'rubot_targets_yolo_exec = my_robot_ai_identification.rubot_targets_yolo:main',
+            'traffic_sign_yolo_exec = my_robot_ai_identification.traffic_sign_yolo:main',
         ],
     },
 )

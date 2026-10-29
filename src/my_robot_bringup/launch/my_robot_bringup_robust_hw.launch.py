@@ -35,7 +35,7 @@ def generate_launch_description():
 
     declare_robot_model = DeclareLaunchArgument(
         'robot_model',
-        default_value='rubot_arm/my_simple_robot.urdf',
+        default_value='rubot/rubot_mecanum.urdf.xacro',
         description='URDF/XACRO path inside my_robot_description/urdf'
     )
 

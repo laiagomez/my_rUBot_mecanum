@@ -36,3 +36,7 @@ def generate_launch_description():
             }],
         ),
     ])
+
+# Al lab hem tingut un problema amb els commits. 
+# Es va quedar la sessió del github iniciada al vscode de l'Adrià (de la sessió de laboratori anterior). 
+# Per aquest motiu els commits de l'activitat 4 els ha fet ell i no cap integrant del grup.

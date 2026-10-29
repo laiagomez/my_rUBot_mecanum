@@ -3,7 +3,7 @@
     <!-- ========================
          Launch Arguments
          ======================== -->
-    <arg name="follow_distance" default="0.35" />
+    <arg name="follow_distance" default="0.30" />
     <arg name="tolerance"       default="0.05" />
     <arg name="right_detection_limit" default="1.0" />
     <arg name="forward_speed"   default="0.30" />

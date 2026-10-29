@@ -27,7 +27,7 @@ def generate_launch_description():
         DeclareLaunchArgument('alignment_gain', default_value='2.0'),
         Node(
             package='my_robot_control',
-            executable='my_robot_wallfollower_holonomic_obstacle_exec',
+            executable='my_robot_wallfollower_holonomic_improved_exec',
             name='holonomic_obstacle_wall_follower',
             output='screen',
             parameters=[{

@@ -23,13 +23,13 @@ Some of the main functions of `rosbridge_server` include:
 
 3. Stablish communication between ROS and web browsers
 
-You need first to add a “web” folder to your ROS 2 workspace:
+The rUBot dashboard files are stored in `tools/web_dashboard`:
 
 ````lua
-ros2_ws/
+my_rUBot_mecanum/
 ├─ src/
 │  └─ … your robot packages …
-└─ web/
+└─ tools/web_dashboard/
    ├─ index.html
    └─ (optional) js/roslib.min.js   <-- vendor the file to avoid CDN issues
 ````
@@ -71,7 +71,7 @@ Then you proceed with:
         
 - Run a simple HTTP server. Open PowerShell or CMD and run:
     ````python
-    cd ~/ROS2_rUBot_mecanum_ws/web
+    cd ~/my_rUBot_mecanum/tools/web_dashboard
     python3 -m http.server 8000
     ````
     > When using TheConstruc environment, port has to be 7000 but in other environments you can use port 8000   
@@ -87,7 +87,7 @@ Then you proceed with:
 
 - Open Chrome / Edge / Firefox.
 
-- Real robot the address will be `http://<ROBOT_IP>:8000/`. This opens by defauld index.html, but you can specify any other html file in the web folder: `http://<ROBOT_IP>:8000/index_new.html`
+- Real robot the address will be `http://<ROBOT_IP>:8000/`. This opens by default `index.html`, but you can specify any other HTML file in `tools/web_dashboard`: `http://<ROBOT_IP>:8000/index_new.html`
 - In the connection field we have to write the address where our RosBridge is running: `ws://<ROBOT_IP>:9090`
 - Click Connect → it should show Connected.
 
@@ -100,9 +100,9 @@ Let's see some control examples of how to use this web dashboard.
 
 This example shows how to create a simple web dashboard to update the position of the robot. The `index_position.html` file contains a simple form to update the position of the robot.
 
-You can find the code in the `web` folder of the repository.
+You can find the code in `tools/web_dashboard` in the repository.
 
-Remember to copy this file as `index.html` in the `web` folder of PC
+Remember to copy this file as `index.html` in `tools/web_dashboard` on the PC.
 
 The updated page should look something like this:
 ![](./Images/06_Web/PosDashboard.png)
@@ -120,9 +120,9 @@ To be able to move the robot through a virtual joystick we will be using another
 
 The `index_joycontrol.html` file contains a simple form to update the position of the robot.
 
-You can find the code in the `web` folder of the repository.
+You can find the code in `tools/web_dashboard` in the repository.
 
-Remember to copy this file as `index.html` in the `web` folder of PC
+Remember to copy this file as `index.html` in `tools/web_dashboard` on the PC.
 
 The updated page should look something like this:
 ![](./Images/06_Web/JoyDashboard.png)
@@ -132,9 +132,9 @@ This example shows how to create a simple web dashboard to to move your robot wi
 
 The `index_JoyPosCam.html` file contains a simple form to update the position of the robot.
 
-You can find the code in the `web` folder of the repository.
+You can find the code in `tools/web_dashboard` in the repository.
 
-Remember to copy this file as `index.html` in the `web` folder of PC
+Remember to copy this file as `index.html` in `tools/web_dashboard` on the PC.
 
 The updated page should look something like this in Virtual environment:
 ![](./Images/06_Web/JoyPosCamDashboard_sw.png)

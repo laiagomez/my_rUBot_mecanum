@@ -1,5 +1,6 @@
 from ultralytics import YOLO
 import cv2
+import msvcrt
 import time
 import sys
 from pathlib import Path
@@ -7,22 +8,22 @@ from pathlib import Path
 # ==============================
 # PARAMETERS
 # ==============================
-TOOL_ROOT = Path(__file__).resolve().parents[1]
-MODEL_PATH = TOOL_ROOT / "workspace" / "runs" / "classify" / "train" / "weights" / "best.pt"
+SCRIPT_DIR = Path(__file__).resolve().parent
+MODEL_PATH = SCRIPT_DIR / "yolo_models" / "yolo11n_cls_g1.pt"
 CAMERA_INDEX = 0
 
 # Resolution used during training
-PROCESS_WIDTH = 160 #640
-PROCESS_HEIGHT = 140 #560
+PROCESS_WIDTH = 640 #640 or 160
+PROCESS_HEIGHT = 480 #480 or 140
 
 # Visualization scaling (1 = real size)
-DISPLAY_SCALE = 4 #1
+DISPLAY_SCALE = 1 #1 to 4
 
 # YOLO inference size
-IMG_SIZE = 160 #640
+IMG_SIZE = 640 #640 or 160
 
-CONF_THRESHOLD = 0.10 #0.25
-WINDOW_NAME = "YOLO Classification - Camera"
+CONF_THRESHOLD = 0.70 #0.25
+WINDOW_NAME = "Traffic Sign Classification"
 
 # ==============================
 # LOAD MODEL
@@ -88,9 +89,12 @@ try:
             confidence = float(result.probs.top1conf)
             class_name = result.names[class_id]
 
-            text = f"{class_name} ({confidence:.2f}) - {elapsed_ms:.1f} ms"
+            if confidence >= CONF_THRESHOLD:
+                text = f"{class_name} ({confidence:.2f}) - {elapsed_ms:.1f} ms"
+            else:
+                text = f"Nothing ({confidence:.2f}) - {elapsed_ms:.1f} ms"
         else:
-            text = f"No classification - {elapsed_ms:.1f} ms"
+            text = f"Nothing - {elapsed_ms:.1f} ms"
 
         # ------------------------------
         # DISPLAY IMAGE
@@ -137,9 +141,20 @@ try:
 
         cv2.imshow(WINDOW_NAME, display_frame)
 
-        key = cv2.waitKey(1) & 0xFF
+        window_key = cv2.waitKey(1) & 0xFF
+        console_key = msvcrt.getwch().lower() if msvcrt.kbhit() else None
+        window_closed = cv2.getWindowProperty(
+            WINDOW_NAME,
+            cv2.WND_PROP_VISIBLE,
+        ) < 1
 
-        if key == ord("q"):
+        exit_requested = (
+            window_key in (ord("q"), ord("Q"))
+            or console_key == "q"
+            or window_closed
+        )
+
+        if exit_requested:
             print("Exit requested by user")
             break
 

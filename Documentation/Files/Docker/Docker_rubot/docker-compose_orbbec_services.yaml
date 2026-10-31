@@ -87,7 +87,7 @@ services:
       my_rosbridge:
         condition: service_healthy
 
-    working_dir: /root/ROS2_rUBot_mecanum_ws/web
+    working_dir: /root/ROS2_rUBot_mecanum_ws/tools/web_dashboard
 
     command: >
       bash -lc '

@@ -285,7 +285,7 @@ We have translated the 3 services on rUBot in an equivalent `docker-compose_orbb
         # Sim mode unset / Lab mode robot IP
         export ROS_STATIC_PEERS=192.168.1.14  # robot IP (14,24,34 or 44)
         # CycloneDDS XML. Not necessary
-        #export CYCLONEDDS_URI=file:///home/Desktop/my_rUBot_mecanum/network_config/humble/cyclonedds_pc.xml
+        #export CYCLONEDDS_URI=file:///home/Desktop/my_rUBot_mecanum/tools/humble_network/cyclonedds_pc.xml
         ````
         > write the proper workspace path, in PC case `/home/student/Desktop/my_rUBot_mecanum`
     - On the robot:
@@ -299,7 +299,7 @@ We have translated the 3 services on rUBot in an equivalent `docker-compose_orbb
         export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
         export ROS_AUTOMATIC_DISCOVERY_RANGE=OFF
         export ROS_STATIC_PEERS=192.168.1.15,192.168.1.16  # PC IP at FacFIS,FacINFORMATICS
-        export CYCLONEDDS_URI=file:///home/ubuntu/my_rUBot_mecanum/network_config/humble/cyclonedds_robot.xml
+        export CYCLONEDDS_URI=file:///home/ubuntu/my_rUBot_mecanum/tools/humble_network/cyclonedds_robot.xml
         ````
         > write the proper workspace path, in robot case `/home/ubuntu/my_rUBot_mecanum`
 

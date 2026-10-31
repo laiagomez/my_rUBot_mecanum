@@ -1,5 +1,9 @@
 # Project for Traffic Signal Detection with YOLO
 
+> **Archived document.** This is a historical version for the legacy
+> `my_robot_ai_identification` workflow. For the maintained navigation guide,
+> see [05b_Project_TrafficSigns_YOLO_AGV.md](../../../05b_Project_TrafficSigns_YOLO_AGV.md).
+
 We will describe the Computer Vision based method to identify the Traffic Sign.
 
 Training models: 
@@ -24,7 +28,7 @@ python3 -m pip install transforms3d==0.4.2
 
 For simulation, you won't be able to use TheConstruct environment. You have to use your **Docker container ROS2 custom environment**:
 - Use VScode and clone your project repository
-- Edit `docker-compose.yaml` from `network_config/humble`
+- Edit `docker-compose.yaml` from `tools/humble_network`
 - Comment or delete the environment variables: 
     - ROS_AUTOMATIC_DISCOVERY_RANGE=OFF
     - ROS_STATIC_PEERS=192.168.1.54
@@ -33,7 +37,7 @@ For simulation, you won't be able to use TheConstruct environment. You have to u
         - DISPLAY=${DISPLAY} #Ubuntu
         - DISPLAY=host.docker.internal:0.0 #Windows 
 - Verify in PC-win `entrypoint_pc.sh` has `LF` NOT `CRLF`
-- Open a terminal in `network_config/humble` and write:
+- Open a terminal in `tools/humble_network` and write:
     ````bash
     docker compose up
     ````

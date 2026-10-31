@@ -65,7 +65,7 @@ The robot must run:
 The web server serves this file by default:
 
 ```text
-/home/ubuntu/ROS2_rUBot_mecanum_ws/web/index.html
+/home/ubuntu/my_rUBot_mecanum/tools/web_dashboard/index.html
 ```
 
 ## Previous dashboard (`index0.html`)
@@ -83,7 +83,7 @@ The previous dashboard:
 
 ### Test `index0.html` without changing the default dashboard
 
-If `index0.html` is present in the robot web folder, open:
+If `index0.html` is present in `tools/web_dashboard` on the robot, open:
 
 ```text
 http://ROBOT_IP:8000/index0.html
@@ -96,7 +96,7 @@ This opens the previous dashboard only for that browser. The default address sti
 The Python web server automatically opens the file named `index.html`. It does not select `index0.html` by itself. To make the previous dashboard the default, connect to the robot and run:
 
 ```bash
-cd /home/ubuntu/ROS2_rUBot_mecanum_ws/web
+cd /home/ubuntu/my_rUBot_mecanum/tools/web_dashboard
 cp index.html index_dashboard_current.html
 cp index0.html index.html
 ```
@@ -112,7 +112,7 @@ http://ROBOT_IP:8000/
 To restore the current dashboard later, run:
 
 ```bash
-cd /home/ubuntu/ROS2_rUBot_mecanum_ws/web
+cd /home/ubuntu/my_rUBot_mecanum/tools/web_dashboard
 cp index_dashboard_current.html index.html
 ```
 

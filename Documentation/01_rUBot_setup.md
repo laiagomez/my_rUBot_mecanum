@@ -118,7 +118,7 @@ Each computer will have a specific IP address assigned:
 - In Physics Faculty Lab: 192.168.1.x5 (x=1,2,3,4 corresponding to group number)
 - In Mathematics and Informatics Faculty Lab: 192.168.1.x6 (x=1,2,3,4 corresponding to group number)
 
-If you have not Ubuntu22.04, you will have to work on a [ROS2 environment on UB custom Docker container](https://github.com/manelpuig/my_rUBot_mecanum/blob/humble/network_config/humble/Network_config_humble.md) - section 4. 
+If you have not Ubuntu22.04, you will have to work on a [ROS2 environment on UB custom Docker container](https://github.com/manelpuig/my_rUBot_mecanum/blob/humble/tools/humble_network/Network_config_humble.md) - section 4. 
 
 If you have Ubuntu22.04, follow instructions:
 - install ROS2 Humble from the official documentation (https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)

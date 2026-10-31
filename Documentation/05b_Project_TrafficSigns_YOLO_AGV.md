@@ -60,10 +60,31 @@ Build the perception and AI-navigation packages:
 
 ```bash
 cd ~/my_rUBot_mecanum
+source /opt/ros/humble/setup.bash
+source .venv-yolo/bin/activate
 colcon build --symlink-install \
   --packages-select my_robot_ai_perception my_robot_ai_navigation
 source install/setup.bash
 ```
+
+Activate the same YOLO environment whenever you build or launch
+`my_robot_ai_perception`; it provides Ultralytics while retaining the ROS 2
+packages through `--system-site-packages`.
+
+The deployed model is loaded from
+`src/AI_Projects/my_robot_ai_perception/models/`, not from the tools folder.
+The supplied `yolo11n_cls_g1.pt` is identical to the model used by the
+standalone verification tool. The classifier configuration selects:
+
+| Configuration | Model | Image topic |
+| --- | --- | --- |
+| `traffic_sign_classifier_sw.yaml` | `yolo11n_cls_g1.pt` | `/camera/image_raw` |
+| `traffic_sign_classifier_real.yaml` | `yolo11n_cls_g1.pt` | `/image_raw` |
+
+When deploying a newly validated model, copy it to this package's `models/`
+directory, set its filename in both configuration files as appropriate, then
+rebuild and source the workspace. The ROS 2 classifier publishes the normalized
+result on `/traffic_sign`, which is the topic consumed by navigation.
 
 The new implementation does not remove the previous YOLO nodes or launch
 files. Both versions can be tested during the migration.

@@ -1,0 +1,44 @@
+services:
+  pc-humble:
+    image: manelpuig/ros2-humble-ub-biorob:latest
+    container_name: pc_humble
+
+    privileged: true
+    network_mode: host
+    ipc: host
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_DOMAIN_ID=5 # ⚠️ numero del grup/robot (1,2,3,4)
+
+      # --- Robust pair-only networking ---
+      - ROS_AUTOMATIC_DISCOVERY_RANGE=OFF
+      - ROS_STATIC_PEERS=192.168.1.54   # ⚠️ IP del robot (14,24,34,44)
+
+      # CycloneDDS XML (PC side)
+      - CYCLONEDDS_URI=file:///config/cyclonedds_pc.xml
+
+      # X11 / rendering
+      - DISPLAY=${DISPLAY} #Ubuntu
+      #- DISPLAY=host.docker.internal:0.0 #Windows+xlaunch
+      - QT_X11_NO_MITSHM=1
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - MESA_GL_VERSION_OVERRIDE=2.1
+
+    volumes:
+      # Entry point script
+      - ./entrypoint_pc.sh:/entrypoint_pc.sh:ro
+      # Timezone from host (for correct log timestamps)
+      #- /etc/localtime:/etc/localtime:ro
+      # X11 display for RViz/Gazebo
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # GPU / rendering devices (if needed)
+      - /dev/dri:/dev/dri
+      # CycloneDDS configuration (PC side)
+      - ./cyclonedds_pc.xml:/config/cyclonedds_pc.xml:ro
+
+    entrypoint: /entrypoint_pc.sh
+    command: sleep infinity

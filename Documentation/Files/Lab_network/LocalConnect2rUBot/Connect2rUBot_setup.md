@@ -100,7 +100,7 @@ The UB custom rUBot mecanum custom made robot is based on:
   ````shell
   ssh-keygen -R 192.168.1.54
   ````
-- Verify you have the file: `clone_student_project.sh` in your `\home\ubuntu` folder. This file is located at: `ROS2_rUBot_mecanum_ws/Documentation/Files/Install_robot/Local_VScode/clone_student_project.sh`
+- Verify you have the file: `clone_student_project.sh` in your `\home\ubuntu` folder. This file is located at: `my_rUBot_mecanum/tools/robot_installation/Old/Local_VScode/clone_student_project.sh`
 - In a new terminal on `\home\ubuntu` type:
   ````shell
   source clone_student_project.sh

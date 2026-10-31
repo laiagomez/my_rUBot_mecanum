@@ -21,14 +21,14 @@ sudo reboot
 
 **PC-ubuntu/linux** will work on SIM and LAB use. docker-compose.yaml is configured by default for LAB use.
 
-- In `~/my_rUBot_mecanum/network_config/humble` review in function of SIM or LAB case, on:
+- In `~/my_rUBot_mecanum/tools/humble_network` review in function of SIM or LAB case, on:
     - `docker-compose.yaml` file: 
         - `ROS_DOMAIN_ID=1` variable to match your Group number.
         - `ROS_AUTOMATIC_DISCOVERY_RANGE` SUBNET (SIM use) or OFF (LAB use).
         - `ROS_STATIC_PEERS` not set (SIM use) or set with your robot IP (LAB Use).
         - Be sure to include: CYCLONEDDS_URI=file:///config/cyclonedds_pc.xml
 
-- Open a terminal in `~/my_rUBot_mecanum/network_config/humble` and run:
+- Open a terminal in `~/my_rUBot_mecanum/tools/humble_network` and run:
     ````bash
     chmod +x entrypoint_pc.sh
     xhost +local:root            # only in case of Host Ubuntu to allow X11 for Docker 
@@ -61,7 +61,7 @@ sudo reboot
     ```
 You are ready to work inside the container and to connect to the robot hardware within ROS2 Humble on Docker!
 
-- To stop the container, open a new terminal on Host in `~/my_rUBot_mecanum/network_config/humble` and run:
+- To stop the container, open a new terminal on Host in `~/my_rUBot_mecanum/tools/humble_network` and run:
     ```bash
     docker compose down
     ```

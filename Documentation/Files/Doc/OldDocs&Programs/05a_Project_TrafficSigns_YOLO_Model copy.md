@@ -1,5 +1,9 @@
 # Computer Vision Tasks with YOLO
 
+> **Archived document.** This is a historical version retained for reference.
+> For the maintained model-generation workflow, see
+> [05a_Project_TrafficSigns_YOLO_Model.md](../../../05a_Project_TrafficSigns_YOLO_Model.md).
+
 In robot perception, four common vision tasks are typically
 used:
 

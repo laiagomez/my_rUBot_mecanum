@@ -1,0 +1,21 @@
+[Unit]
+Description=My Robot rosbridge_websocket (port 9090)
+Requires=my_robot.service
+After=my_robot.service network-online.target
+Wants=network-online.target
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu
+Environment=ROS_DOMAIN_ID=6
+Environment=RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+Environment=ROS_LOCALHOST_ONLY=0
+ExecStart=/usr/bin/bash -lc 'source /opt/ros/humble/setup.bash && source /home/ubuntu/my_rUBot_mecanum/install/setup.bash && exec ros2 run rosbridge_server rosbridge_websocket --port 9090 --address 0.0.0.0 --ros-args -p default_call_service_timeout:=5.0 -p call_services_in_new_thread:=true -p send_action_goals_in_new_thread:=true'
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+PartOf=my_robot.service
+[Install]
+WantedBy=multi-user.target

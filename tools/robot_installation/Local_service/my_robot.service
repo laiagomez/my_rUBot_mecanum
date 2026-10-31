@@ -1,0 +1,23 @@
+[Unit]
+Description=My Robot bringup (ROS 2)
+Wants=network-online.target time-sync.target
+After=network-online.target time-sync.target
+Requires=sys-subsystem-net-devices-wlan0.device
+After=sys-subsystem-net-devices-wlan0.device
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu
+Environment=ROS_DOMAIN_ID=6
+Environment=RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+Environment=ROS_LOCALHOST_ONLY=0
+ExecStart=/home/ubuntu/start_robot.sh
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

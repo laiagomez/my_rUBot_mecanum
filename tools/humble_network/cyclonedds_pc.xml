@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CycloneDDS xmlns="https://cdds.io/config">
+  <Domain id="any">
+    <General>
+      <Interfaces>
+        <!-- Selecciona la interfície que estigui a la subxarxa 192.168.1.0/24 -->
+        <NetworkInterface address="192.168.1.0" priority="10" multicast="true"/>
+        <!-- also possible <NetworkInterface name="wlp2s0"/> -->
+      </Interfaces>
+      <!-- En Humble millor true -->
+      <AllowMulticast>true</AllowMulticast>
+      <!-- Tamany gran de transit de fitxers, util per imatges -->
+      <MaxMessageSize>65500B</MaxMessageSize>
+    </General>
+  </Domain>
+</CycloneDDS>

@@ -15,6 +15,7 @@ yolo_model_generation/
 |   |-- capture_ros.py
 |   |-- prepare_dataset.py
 |   |-- train.py
+|   |-- yolo_models/             # selected models for standalone checks
 |   |-- infer_webcam.py
 |   `-- infer_ros.py
 |-- detection/
@@ -60,16 +61,26 @@ python classification/prepare_dataset.py
 python classification/train.py
 ```
 
-Test the trained classifier:
+The training output is written to `workspace/runs/classify/train/weights/best.pt`.
+Copy a validated model to `classification/yolo_models/` with a versioned name
+before standalone ROS 2 verification. The default verification model is
+`yolo11n_cls_g1.pt`:
 
 ```bash
 python classification/infer_webcam.py
 python classification/infer_ros.py
 ```
 
-The best model is written to
-`workspace/runs/classify/train/weights/best.pt`. Copy only the validated
-deployment model to `my_robot_ai_perception/models/`.
+For a camera topic or model different from the defaults:
+
+```bash
+python classification/infer_ros.py \
+  --model yolo_models/yolo11n_cls_g2.pt \
+  --image-topic /camera/image_raw
+```
+
+Copy the same validated deployment model to
+`my_robot_ai_perception/models/` before launching the ROS 2 perception node.
 
 ## Object-detection workflow
 

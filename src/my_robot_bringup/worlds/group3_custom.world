@@ -1,0 +1,231 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="group3_custom">
+
+    <physics name="default_physics" type="ode">
+        <max_step_size>0.005</max_step_size>
+        <real_time_factor>1.0</real_time_factor>
+        <real_time_update_rate>200</real_time_update_rate>
+    </physics>
+
+    <!-- Core Ignition systems -->
+    <plugin filename="libignition-gazebo6-physics-system.so"
+            name="ignition::gazebo::systems::Physics"/>
+    <plugin filename="libignition-gazebo6-user-commands-system.so"
+            name="ignition::gazebo::systems::UserCommands"/>
+    <plugin filename="libignition-gazebo6-scene-broadcaster-system.so"
+            name="ignition::gazebo::systems::SceneBroadcaster"/>
+    <plugin filename="libignition-gazebo6-sensors-system.so"
+            name="ignition::gazebo::systems::Sensors"/>
+
+    <!-- Scene configuration -->
+    <scene>
+      <ambient>0.6 0.6 0.6 1</ambient>
+      <background>0.8 0.8 0.8 1</background>
+      <shadows>false</shadows>
+      <grid>true</grid>
+    </scene>
+
+    <!-- Sun light -->
+    <light type="directional" name="sun">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- Ground plane -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>20 20</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>20 20</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- PERÍMETRE EXTERIOR TOTALMENT SEGELLAT (Extrems creuats a x,y = ±2.0) -->
+    <!-- Nord (y = 2.0) -->
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_north_1</name>
+      <pose>-1.5 2.0 0.15 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_north_2</name>
+      <pose>-0.5 2.0 0.15 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_north_3</name>
+      <pose>0.5 2.0 0.15 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_north_4</name>
+      <pose>1.5 2.0 0.15 0 0 0</pose>
+    </include>
+
+    <!-- Sud (y = -2.0) -->
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_south_1</name>
+      <pose>-1.5 -2.0 0.15 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_south_2</name>
+      <pose>-0.5 -2.0 0.15 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_south_3</name>
+      <pose>0.5 -2.0 0.15 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_south_4</name>
+      <pose>1.5 -2.0 0.15 0 0 0</pose>
+    </include>
+
+    <!-- Est (x = 2.0) -->
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_east_1</name>
+      <pose>2.0 -1.5 0.15 0 0 1.5708</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_east_2</name>
+      <pose>2.0 -0.5 0.15 0 0 1.5708</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_east_3</name>
+      <pose>2.0 0.5 0.15 0 0 1.5708</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_east_4</name>
+      <pose>2.0 1.5 0.15 0 0 1.5708</pose>
+    </include>
+
+    <!-- Oest (x = -2.0) -->
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_west_1</name>
+      <pose>-2.0 -1.5 0.15 0 0 1.5708</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_west_2</name>
+      <pose>-2.0 -0.5 0.15 0 0 1.5708</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_west_3</name>
+      <pose>-2.0 0.5 0.15 0 0 1.5708</pose>
+    </include>
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>wall_outer_west_4</name>
+      <pose>-2.0 1.5 0.15 0 0 1.5708</pose>
+    </include>
+
+    <!-- OBSTACLES INTERNS -->
+    <include>
+      <uri>model://wall120cm</uri>
+      <name>internal_wall_nw</name>
+      <pose>-0.8 0.8 0.15 0 0 1.5708</pose>
+    </include>
+    <include>
+      <uri>model://wall90cm</uri>
+      <name>internal_wall_se</name>
+      <pose>0.8 -0.6 0.15 0 0 0</pose>
+    </include>
+
+    <!-- SENYAL DE TRÀNSIT -->
+    <include>
+      <uri>model://sign_left_ign</uri>
+      <name>traffic_sign_left</name>
+      <pose>1.1 1.1 0.0 0 0 0</pose>
+    </include>
+
+    <!-- Gazebo GUI configuration -->
+    <gui fullscreen="0">
+      <plugin filename="MinimalScene" name="3D View">
+        <gz-gui>
+          <title>3D View</title>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="string" key="state">docked</property>
+        </gz-gui>
+        <engine>ogre2</engine>
+        <scene>scene</scene>
+        <camera_pose>0 0 2.5 0 1.5708 0</camera_pose>
+      </plugin>
+
+      <plugin filename="GzSceneManager" name="Scene Manager">
+        <gz-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">1</property>
+          <property key="height" type="double">1</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
+
+      <plugin filename="InteractiveViewControl" name="Interactive view control">
+        <gz-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">1</property>
+          <property key="height" type="double">1</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
+
+      <plugin filename="EntityContextMenuPlugin" name="Entity context menu">
+        <gz-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">1</property>
+          <property key="height" type="double">1</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
+
+      <plugin filename="CameraTracking" name="Camera Tracking">
+        <gz-gui>
+          <property key="width" type="double">1</property>
+          <property key="height" type="double">1</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
+
+      <plugin filename="ComponentInspector" name="Component inspector"/>
+      <plugin filename="EntityTree" name="Entity tree"/>
+    </gui>
+
+  </world>
+</sdf>

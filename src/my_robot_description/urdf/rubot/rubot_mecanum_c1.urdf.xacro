@@ -1,0 +1,298 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="rubot_mecanum">
+
+    <!-- ros2_control arguments -->
+    <xacro:arg name="use_gazebo_plugin" default="true"/>
+    <xacro:arg name="hardware_plugin" default="ign_ros2_control/IgnitionSystem"/>
+    <xacro:arg name="ros2_control_params" default=""/>
+
+    <material name="yellow">
+        <color rgba="0.8 0.8 0.0 1.0"/>
+    </material>
+    <material name="black">
+        <color rgba="0.15 0.15 0.15 1.0"/>
+    </material>
+    <material name="dark_grey">
+        <color rgba="0.2 0.2 0.2 1.0"/>
+    </material>
+    <material name="light_grey">
+        <color rgba="0.75 0.75 0.75 1.0"/>
+    </material>
+    <material name="green">
+        <color rgba="0.2 0.7 0.2 1.0"/>
+    </material>
+
+<!-- ===== Frames base ===== -->
+  <link name="base_footprint"/>
+
+  <link name="base_link">
+    <!-- Visual (per RViz) -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_description/meshes/rubot/base_link.stl"
+              scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+
+    <!-- Collision (per costmaps si vols usar robot footprint/voxel amb robot model) -->
+    <collision>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.35 0.25 0.10"/>
+      </geometry>
+    </collision>
+    <!-- Needed Inertia -->
+    <inertial>
+        <origin xyz="0 0 0.02" rpy="0 0 0"/>
+        <mass value="3.0"/>
+        <inertia
+            ixx="0.03"
+            ixy="0.0"
+            ixz="0.0"
+            iyy="0.08"
+            iyz="0.0"
+            izz="0.05"/>
+    </inertial>
+  </link>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ===== Rodes (només visuals, fixed) ===== -->
+  <joint name="upper_left_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="upper_left_wheel"/>
+    <origin xyz="0.07 0.10 0.00" rpy="0 0 0"/>
+  </joint>
+  <link name="upper_left_wheel">
+    <visual>
+      <geometry>
+        <mesh filename="package://my_robot_description/meshes/rubot/upper_left_wheel.stl"
+              scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="light_grey"/>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry>
+            <cylinder radius="0.04" length="0.035"/>
+        </geometry>
+    </collision>
+    <inertial>
+        <mass value="0.05"/>
+        <inertia
+            ixx="0.00003"
+            ixy="0.0"
+            ixz="0.0"
+            iyy="0.00003"
+            iyz="0.0"
+            izz="0.00004"/>
+    </inertial>
+  </link>
+
+  <joint name="lower_left_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lower_left_wheel"/>
+    <origin xyz="-0.085 0.10 0.00" rpy="0 0 0"/>
+  </joint>
+  <link name="lower_left_wheel">
+    <visual>
+      <geometry>
+        <mesh filename="package://my_robot_description/meshes/rubot/lower_left_wheel.stl"
+              scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="light_grey"/>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry>
+            <cylinder radius="0.04" length="0.035"/>
+        </geometry>
+    </collision>
+    <inertial>
+        <mass value="0.05"/>
+        <inertia
+            ixx="0.00003"
+            ixy="0.0"
+            ixz="0.0"
+            iyy="0.00003"
+            iyz="0.0"
+            izz="0.00004"/>
+    </inertial>
+  </link>
+
+  <joint name="upper_right_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="upper_right_wheel"/>
+    <origin xyz="0.07 -0.10 0.00" rpy="0 0 3.14159"/>
+  </joint>
+  <link name="upper_right_wheel">
+    <visual>
+      <geometry>
+        <mesh filename="package://my_robot_description/meshes/rubot/upper_right_wheel.stl"
+              scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="light_grey"/>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry>
+            <cylinder radius="0.04" length="0.035"/>
+        </geometry>
+    </collision>
+    <inertial>
+        <mass value="0.05"/>
+        <inertia
+            ixx="0.00003"
+            ixy="0.0"
+            ixz="0.0"
+            iyy="0.00003"
+            iyz="0.0"
+            izz="0.00004"/>
+    </inertial>
+  </link>
+
+  <joint name="lower_right_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lower_right_wheel"/>
+    <origin xyz="-0.085 -0.10 0.00" rpy="0 0 3.14159"/>
+  </joint>
+  <link name="lower_right_wheel">
+    <visual>
+      <geometry>
+        <mesh filename="package://my_robot_description/meshes/rubot/lower_right_wheel.stl"
+              scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="light_grey"/>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry>
+            <cylinder radius="0.04" length="0.035"/>
+        </geometry>
+    </collision>
+    <inertial>
+        <mass value="0.05"/>
+        <inertia
+            ixx="0.00003"
+            ixy="0.0"
+            ixz="0.0"
+            iyy="0.00003"
+            iyz="0.0"
+            izz="0.00004"/>
+    </inertial>
+  </link>
+
+  <!-- ===== Lidar frame ===== -->
+  <joint name="base_scan_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_scan"/>
+    <origin xyz="0 0 0.14" rpy="0 0 0"/>
+  </joint>
+  <link name="base_scan">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_description/meshes/rubot/Lidar.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+  </link>
+
+  <!-- ===== Camera frame ===== -->
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera"/>
+    <origin xyz="0.13 0 0.08" rpy="0 0 0"/>
+  </joint>
+  <link name="camera">
+    <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+            <box size="0.025 0.05 0.025"/>
+        </geometry>
+        <material name="green"/>
+    </visual>
+  </link>
+
+    <!-- =========================
+        Gazebo plugins
+        ========================= -->
+
+    <gazebo>
+    <!-- Holonomic / planar velocity control -->
+    <plugin filename="libignition-gazebo6-velocity-control-system.so"
+            name="ignition::gazebo::systems::VelocityControl">
+        <topic>/cmd_vel</topic>
+    </plugin>
+
+    <!-- Odometry publisher -->
+    <plugin filename="libignition-gazebo6-odometry-publisher-system.so"
+            name="ignition::gazebo::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
+        <odom_topic>/odom</odom_topic>
+        <tf_topic>/tf</tf_topic>
+        <odom_publish_frequency>50</odom_publish_frequency>
+    </plugin>
+    </gazebo>
+
+    <!-- =========================
+     Gazebo lidar sensor
+     ========================= -->
+    <gazebo reference="base_scan">
+        <sensor name="lidar" type="gpu_lidar">
+            <pose>0 0 0 0 0 0</pose>
+            <topic>/scan</topic>
+            <update_rate>10</update_rate>
+            <ray>
+            <scan>
+                <horizontal>
+                <samples>360</samples>
+                <resolution>1</resolution>
+                <min_angle>-2.3</min_angle>
+                <max_angle>2.3</max_angle>
+                </horizontal>
+            </scan>
+            <range>
+                <min>0.12</min>
+                <max>10.0</max>
+                <resolution>0.01</resolution>
+            </range>
+            </ray>
+            <always_on>true</always_on>
+            <visualize>false</visualize>
+        </sensor>
+    </gazebo>
+
+    <!-- =========================
+        Gazebo RGBD camera sensor
+        ========================= -->
+    <gazebo reference="camera">
+        <sensor name="rgbd_camera" type="rgbd_camera">
+            <pose>0 0 0 0 0 0</pose>
+            <topic>/camera</topic>
+            <update_rate>15</update_rate>
+            <camera>
+            <horizontal_fov>1.047</horizontal_fov>
+            <image>
+                <width>320</width>
+                <height>240</height>
+                <format>R8G8B8</format>
+            </image>
+            <clip>
+                <near>0.05</near>
+                <far>10.0</far>
+            </clip>
+            </camera>
+            <always_on>true</always_on>
+            <visualize>false</visualize>
+        </sensor>
+    </gazebo>
+
+<gazebo reference="base_link"><mu1>0.0</mu1><mu2>0.0</mu2></gazebo><gazebo reference="upper_left_wheel"><mu1>0.0</mu1><mu2>0.0</mu2></gazebo><gazebo reference="upper_right_wheel"><mu1>0.0</mu1><mu2>0.0</mu2></gazebo><gazebo reference="lower_left_wheel"><mu1>0.0</mu1><mu2>0.0</mu2></gazebo><gazebo reference="lower_right_wheel"><mu1>0.0</mu1><mu2>0.0</mu2></gazebo></robot>

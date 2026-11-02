@@ -147,7 +147,7 @@ When using **Real robot**:
 - Launch the navigation stack:
 
   ```shell
-  ros2 launch my_robot_navigation2 navigation2_robot.launch.py use_sim_time:=false map_file:=my_map.yaml params_file:=rubot_real.yaml
+  ros2 launch my_robot_navigation2 navigation2_robot.launch.py use_sim_time:=false map_file:=my_lab_map.yaml params_file:=rubot_real_lidar_nav.yaml
   ```
 
 - If the initial pose is not configured, localize the robot on the map using **2D Pose Estimate** in RViz. The global planner and controller can then start operating correctly.
@@ -214,7 +214,7 @@ We can create a Python node to interact with the Nav2 topics and actions. To nav
     # Place the robot at the map origin [0.0, 0.0, 0.0] and reset odometry first
     ros2 topic pub --once /reset_odom std_msgs/msg/Bool "{data: true}"
 
-    ros2 launch my_robot_navigation2 navigation2_robot.launch.py use_sim_time:=false map_file:=my_map.yaml params_file:=rubot_real.yaml
+    ros2 launch my_robot_navigation2 navigation2_robot.launch.py use_sim_time:=false map_file:=my_lab_map.yaml params_file:=rubot_real_lidar_nav.yaml
     ```
 
     > It is important to specify `use_sim_time:=false` for the real robot because it is set to `true` by default in `navigation2_robot.launch.py`.
@@ -222,7 +222,7 @@ We can create a Python node to interact with the Nav2 topics and actions. To nav
 - Launch the Python node using the initial pose and target waypoints defined in the `config` folder:
 
   ```shell
-  ros2 launch my_robot_nav_control nav_waypoints.launch.py wp_file:=waypoints_sw_ign.yaml
+  ros2 launch my_robot_nav_control nav_waypoints.launch.py wp_file:=waypoints_hw.yaml
   ```
   ![](./Images/04_Slam/nav2goals.png)
 

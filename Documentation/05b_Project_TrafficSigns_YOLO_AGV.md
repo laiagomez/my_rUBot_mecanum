@@ -279,10 +279,6 @@ at the same time.
 
 ### 6.1 Start and verify the hardware
 
-```bash
-ros2 launch my_robot_bringup my_robot_bringup_robust_hw.launch.py
-```
-
 Check the essential interfaces:
 
 ```bash
@@ -299,13 +295,9 @@ last command if the camera driver uses a different name.
 ```bash
 ros2 launch my_robot_navigation2 navigation2_robot.launch.py \
   use_sim_time:=false \
-  map_file:=my_map.yaml \
-  params_file:=rubot_real_lidar_ai.yaml
+  map_file:=my_lab_map.yaml \
+  params_file:=rubot_real_lidar_nav.yaml
 ```
-
-`rubot_real_lidar_ai.yaml` is the corresponding hardware configuration. Keep
-`use_sim_time:=false` and verify the real robot localization before starting
-the traffic-sign route.
 
 Place the physical robot at the configured initial pose. Verify its pose and
 costmaps in RViz. Use **2D Pose Estimate** when necessary.

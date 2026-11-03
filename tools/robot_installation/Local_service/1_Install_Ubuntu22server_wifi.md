@@ -34,16 +34,38 @@ For this robot we will use a computero onboard based on Raspberrypi4 where we wi
   ````bash
   127.0.1.1 rubot06
   ````
-- Now if you connect the raspberrypi to a router with ethernet cable you will be able to connect with another computer with ssh protocol:
+- Enable local hostname resolution (mDNS) on the Raspberry Pi:
+  ````bash
+  sudo apt update
+  sudo apt install -y avahi-daemon
+  sudo systemctl enable --now avahi-daemon
+  ````
+- When the Raspberry Pi and an Ubuntu PC are connected to the same local network, connect by hostname. This is the recommended method because the IP address can change after a reboot:
   ````bash
   ssh ubuntu@rubot06.local
   ````
-- Using VScode with `Remote-SSH` extension:
+- Test hostname resolution from the Ubuntu PC before using VS Code:
+  ````bash
+  ping rubot06.local
+  ssh ubuntu@rubot06.local
+  ````
+  If `.local` does not resolve on the Ubuntu PC, install and enable Avahi there too:
+  ````bash
+  sudo apt update
+  sudo apt install -y avahi-daemon
+  sudo systemctl enable --now avahi-daemon
+  ````
+- Using VS Code with the `Remote-SSH` extension, add this entry to `~/.ssh/config` on the Ubuntu PC:
   ````xml
-  Host rUBot06_on_Ethernet
+  Host rubot06
     HostName rubot06.local
     ForwardX11 yes
     User ubuntu
+  ````
+  Then select the `rubot06` host in VS Code Remote-SSH.
+- Use the IP address only as a fallback for diagnostics or when mDNS is unavailable:
+  ````bash
+  ssh ubuntu@192.168.1.xx
   ````
 
 ## Change Netplan configuration for Ethernet + Multiple WiFi

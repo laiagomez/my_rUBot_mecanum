@@ -1,169 +1,122 @@
-# ROS 2 Humble Installation and Auto-Startup Setup on Raspberry Pi 4 (Ubuntu 22.04)
+# ROS 2 Humble and Local Services: Manual Installation
 
-This guide explains how to:
+Use this guide after completing [Ubuntu Server and Wi-Fi setup](1_Install_Ubuntu22server_wifi.md). It installs ROS 2 Humble, builds the rUBot workspace, and configures the robot bringup, rosbridge, and dashboard services manually.
 
-- Install ROS 2 Humble (Desktop)
-- Install required dependencies
-- Build your robot workspace
-- Configure a systemd service to launch the robot on boot
-- Verify everything is working correctly
+For the automated alternative, including USB device rules, see [Automatic installation](4_Install_ros2humble_usb_services_automatic.md).
 
----
+## 1. Clone the repository
 
-## 1. Install ROS 2 Humble and Dependencies
+```bash
+cd /home/ubuntu
+git clone https://github.com/manelpuig/my_rUBot_mecanum.git
+cd /home/ubuntu/my_rUBot_mecanum/tools/robot_installation/Local_service
+```
 
-### 🔧 Run the installation script:
+## 2. Install ROS 2 Humble and build the workspace
+
+The installation script installs ROS 2 Humble, all required packages (including `ros-humble-v4l2-camera`), resolves workspace dependencies, and builds the workspace.
 
 ```bash
 chmod +x install_ros2_humble_rubot.sh
 ./install_ros2_humble_rubot.sh
-````
-This script will:
+```
 
-- Configure locale and repositories
+When it finishes, open a new terminal or run:
 
-- Install ros-humble-desktop
-
-- Install useful dev and robot packages
-
-- Clone your custom workspace and RPLidar driver
-
-- Resolve dependencies with rosdep
-
-- Build with colcon
-
-- Add environment setup to .bashrc
-
-**New V4L2 camera package**:
-
-A new package Visual for Linux ROS2 package has to be installed with:
-````bash
-sudo apt install ros-humble-v4l2-camera
-````
-> This is needed for usb cam when using ROS2
-
-# ✅ Verify the installation
-After it finishes (approx. 30–45 minutes):
-
-````bash
-source ~/.bashrc
+```bash
+source /home/ubuntu/.bashrc
 ros2 doctor
-````
+```
 
-You should see:
+## 3. Configure the robot
 
-```css
-All 5 checks passed
-````
-You can also test a basic node:
+All shared ROS and service settings are stored in `robot.env`. For a new robot, normally only `ROS_DOMAIN_ID` must be changed.
 
-````bash
-ros2 run demo_nodes_cpp talker
-````
-## 2. Set Up Systemd Service: my_robot.service
-This service will launch your bringup automatically on boot.
-- Copy files to home directory
-    - start_robot.sh
-- Make both scripts executable:
-    ````bash
-    chmod +x start_robot.sh
-    ````
-    >Carefull!: Change ROS_DOMAIN_ID=0 to your Group number.
-- Start it manually (optional):
-    ````bash
-    sudo systemctl start my_robot.service
-    ````
-- Check service status:
-    ````bash
-    systemctl status my_robot.service
-    ````
-- View Logs
-    ````bash
-    journalctl -u my_robot.service -e
-    sudo journalctl -u my_robot -f
-    ````
-- Enable the service for next power-up
-    ````shell
-    sudo systemctl daemon-reload
-    sudo systemctl enable --now my_robot.service
-    ````
-- Test After Reboot
-    ````bash
-    sudo reboot
-    ````
+```bash
+nano robot.env
+```
 
-## 👌 Notes
-The service waits for the network and WiFi (wlan0) before launching
+Example:
 
-The environment config enables graphical apps (rviz2, rqt)
+```ini
+ROS_DOMAIN_ID=6
+```
 
-The workspace is compiled only once (it won’t repeat unnecessarily)
+Do not set different ROS domain values in the service files or startup scripts. `robot.env` is the single source of configuration for all three services.
 
+## 4. Prepare the startup scripts
 
-## 3. Complete bringup with Rosbridge and webserver
+```bash
+chmod +x start_robot.sh start_rosbridge.sh start_web_dashboard.sh
+```
 
-- Install the rosbridge server
-    ```bash
-    sudo apt update
-    sudo apt install ros-humble-rosbridge-server -y
-    ```
-- Copy and make executable the `start_robot.sh` file:
-    ```bash
-    cd /home/ubuntu/
-    chmod +x start_robot.sh
-    ```
-- Save the 3 service files to /etc/systemd/system/:
-    ````bash
-    sudo nano /etc/systemd/system/my_robot.service
-    sudo nano /etc/systemd/system/my_rosbridge.service
-    sudo nano /etc/systemd/system/my_robot_web.service
-    ````
-- Enable and start all services:
-    ```bash
-    sudo systemctl daemon-reload
-    sudo systemctl enable --now my_robot.service my_rosbridge.service my_robot_web.service
-    ````
-- Check status of all services:
-    ```bash
-    systemd-analyze critical-chain my_robot_web.service
-    sudo systemctl status my_robot
-    sudo systemctl status my_rosbridge
-    sudo systemctl status my_robot_web
-    sudo journalctl -u my_robot -f
-    sudo journalctl -u my_rosbridge -f
-    sudo journalctl -u my_robot_web -f
-    ````
-- Reboot and verify all services start automatically
+The scripts remain in this repository; do not copy them to `/home/ubuntu`.
 
-### Service modification
+## 5. Install the systemd unit files manually
 
-To modify the my_robot.service:
-- Edit start_robot.sh:
-    ```bash
-    nano /home/ubuntu/start_robot.sh
-    ```
-- Make changes
-- Stop the service, reload daemon and enable to next start:
-    ```bash
-    sudo systemctl stop my_robot.service
-    sudo systemctl daemon-reload
-    sudo systemctl enable my_robot.service
-    ```
-- Launch manually to test:
-    ```bash
-    /home/ubuntu/start_robot.sh
-    ```
-- restart the service if everything works:
-    ```bash
-    sudo systemctl start my_robot.service
-    ```
-- Check status and logs:
-    ```bash
-    sudo systemctl status my_robot.service
-    sudo journalctl -u my_robot -f
-    ```
-- Because of the other services has been authomatically stopped, we have to manually start them again:
-    ```bash
-    sudo systemctl start my_rosbridge.service
-    sudo systemctl start my_robot_web.service
-    ```
+Copy the three unit files to the system systemd directory:
+
+```bash
+sudo install -m 0644 my_robot.service /etc/systemd/system/my_robot.service
+sudo install -m 0644 my_rosbridge.service /etc/systemd/system/my_rosbridge.service
+sudo install -m 0644 my_robot_web.service /etc/systemd/system/my_robot_web.service
+```
+
+Reload systemd and enable all services:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now my_robot.service my_rosbridge.service my_robot_web.service
+```
+
+## 6. Verify the services
+
+```bash
+systemctl status my_robot my_rosbridge my_robot_web
+```
+
+Follow logs when diagnosing a startup issue:
+
+```bash
+sudo journalctl -u my_robot -f
+sudo journalctl -u my_rosbridge -f
+sudo journalctl -u my_robot_web -f
+```
+
+The dashboard is available at:
+
+```text
+http://ROBOT_IP:8000/
+```
+
+## 7. Test after reboot
+
+```bash
+sudo reboot
+```
+
+After reconnecting to the robot, check the service status again.
+
+## 8. Update service configuration
+
+To change the ROS domain or a configured port, edit `robot.env`:
+
+```bash
+cd /home/ubuntu/my_rUBot_mecanum/tools/robot_installation/Local_service
+nano robot.env
+sudo systemctl restart my_robot.service my_rosbridge.service my_robot_web.service
+```
+
+To apply changed `.service` files, copy them again, reload systemd, and restart the services:
+
+```bash
+sudo install -m 0644 my_robot.service /etc/systemd/system/my_robot.service
+sudo install -m 0644 my_rosbridge.service /etc/systemd/system/my_rosbridge.service
+sudo install -m 0644 my_robot_web.service /etc/systemd/system/my_robot_web.service
+sudo systemctl daemon-reload
+sudo systemctl restart my_robot.service my_rosbridge.service my_robot_web.service
+```
+
+## Hardware note
+
+Before relying on automatic startup, configure stable device names for the Arduino, lidar, and camera as described in [Robust hardware bringup](3_Install_rubot_robust_bringup_hw.md).

@@ -1,28 +1,30 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
-echo "=== Locale ==="
-sudo apt update && sudo apt install -y locales
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+WORKSPACE_DIR="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
+
+echo "=== Configure locale ==="
+sudo apt update
+sudo apt install -y locales
 sudo locale-gen en_US en_US.UTF-8
 sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-echo "=== Add ROS 2 repo ==="
-sudo apt install -y software-properties-common
+echo "=== Add ROS 2 repository ==="
+sudo apt install -y software-properties-common curl
 sudo add-apt-repository universe -y
-sudo apt update
-sudo apt install -y curl
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
-echo "=== Install ROS 2 Humble Base ==="
+echo "=== Install ROS 2 Humble base ==="
 sudo apt update
 sudo apt upgrade -y
 sudo apt install -y ros-humble-ros-base
 
-echo "=== Install development and robot-related packages ==="
+echo "=== Install development and robot packages ==="
 sudo apt install -y \
   build-essential \
   cmake \
@@ -70,16 +72,22 @@ sudo apt install -y \
   ros-humble-diagnostic-msgs
 
 echo "=== Initialize rosdep ==="
-sudo rosdep init || echo "rosdep already initialized"
+sudo rosdep init || echo "rosdep is already initialized"
 rosdep update
 
-echo "=== Configure environment ==="
-echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+echo "=== Resolve workspace dependencies ==="
+cd "${WORKSPACE_DIR}"
+rosdep install --from-paths src --ignore-src -r -y --skip-keys="gazebo_ros"
 
-echo "=== Check ROS 2 installation ==="
+echo "=== Build workspace ==="
 source /opt/ros/humble/setup.bash
-if ros2 doctor | grep -q "All 5 checks passed"; then
-  echo "✅ ROS 2 Humble installed and verified successfully!"
-else
-  echo "⚠️ ROS 2 Humble installed, but doctor check reported warnings."
-fi
+colcon build --symlink-install
+
+echo "=== Configure shell environment ==="
+grep -qxF 'source /opt/ros/humble/setup.bash' ~/.bashrc || echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
+grep -qxF "source ${WORKSPACE_DIR}/install/setup.bash" ~/.bashrc || echo "source ${WORKSPACE_DIR}/install/setup.bash" >> ~/.bashrc
+
+echo "=== Verify ROS 2 installation ==="
+source "${WORKSPACE_DIR}/install/setup.bash"
+ros2 doctor || echo "ROS 2 doctor reported warnings; review the output above."
+echo "ROS 2 Humble and the rUBot workspace were installed successfully."

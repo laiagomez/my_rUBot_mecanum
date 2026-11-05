@@ -1,5 +1,5 @@
 initial_pose: [0.0,0.0,0.0]
 waypoints: # waypoints: [] creates an empty list and goes to final_pose directly
-  - [0.5,0.3,0.0]
-  - [1.5,0.8,0.0]
+  - [0.5,0.0,0.0]
+  - [1.5,0.5,0.0]
 final_pose: [2.5,0.0,1.57]

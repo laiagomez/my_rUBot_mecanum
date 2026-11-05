@@ -261,6 +261,24 @@ separately is unnecessary. Change `3.11` if another compatible Python version
 is installed. Once activated, run all the examples below with `python`, rather
 than `py -3.11`, so they use this environment.
 
+### Verify a classification model from a windows webcamera
+
+From the repository root, activate the YOLO environment, then verify
+the available image topic:
+
+```bash
+cd my_rUBot_mecanum
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv-yolo\Scripts\Activate.ps1
+```
+
+Run the standalone classifier:
+
+```bash
+python tools/yolo_model_generation/classification/infer_webcam.py
+```
+![yolo](./Images/07_Yolo/infer_webcam1.png)
+
 ### Ubuntu or a ROS 2 development container
 
 ```bash
@@ -459,12 +477,20 @@ To label the traffic signs in the images and train a model, we will use Roboflow
 Pose estimation detects **keypoints of articulated bodies**, typically
 humans.
 
-1. Open a terminal in the repository root.
-2. Run the Python program:
+- From the repository root, activate the YOLO environment, then verify
+the available image topic:
 
-```bash
-python tools/yolo_model_generation/pose/pose_gesture_webcam.py
-```
+    ```bash
+    cd my_rUBot_mecanum
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+    .\.venv-yolo\Scripts\Activate.ps1
+    ```
+- Run the Python program:
+
+    ```bash
+    python tools/yolo_model_generation/pose/pose_gesture_webcam.py
+    ```
 
 ![](./Images/07_Yolo/01_Yolo_Pose_Detection.png)
 ![](./Images/07_Yolo/01_Yolo_Pose_Detection2.png)
+![](./Images/07_Yolo/infer_pose1.png)

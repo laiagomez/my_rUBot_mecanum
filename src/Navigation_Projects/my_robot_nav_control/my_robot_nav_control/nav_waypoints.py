@@ -4,6 +4,7 @@ import yaml
 
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import ExternalShutdownException
 from nav2_simple_commander.robot_navigator import BasicNavigator
 from geometry_msgs.msg import PoseStamped
 import tf_transformations
@@ -16,8 +17,8 @@ class NavigationTask(Node):
 
         self.navigator = BasicNavigator()
 
-        # Only one ROS parameter: path to external YAML file
         self.declare_parameter('wp_file', '')
+        self.declare_parameter('set_initial_pose', False)
 
         wp_file = self.get_parameter('wp_file').value
         if not wp_file:
@@ -86,7 +87,18 @@ class NavigationTask(Node):
             pose_list.append(self._create_pose_stamped(final_x, final_y, final_yaw))
             self.navigator.followWaypoints(pose_list)
 
+        current_waypoint = None
         while not self.navigator.isTaskComplete():
+            feedback = self.navigator.getFeedback()
+            if self.waypoints and feedback is not None:
+                index = feedback.current_waypoint
+                if index != current_waypoint:
+                    current_waypoint = index
+                    if index < len(self.waypoints):
+                        self.get_logger().info(
+                            f"Navigating to waypoint {index + 1}: {self.waypoints[index]}")
+                    else:
+                        self.get_logger().info(f"Navigating to final pose: {self.final_pose}")
             rclpy.spin_once(self, timeout_sec=0.1)
 
         result = self.navigator.getResult()
@@ -99,12 +111,19 @@ def main(args=None):
 
     node = NavigationTask()
 
-    node.set_initial_pose()
-    node.wait_for_nav2()
-    node.run_navigation()
+    try:
+        if node.get_parameter('set_initial_pose').value:
+            node.set_initial_pose()
+        node.wait_for_nav2()
+        node.run_navigation()
+    except (KeyboardInterrupt, ExternalShutdownException):
+        if rclpy.ok():
+            node.navigator.cancelTask()
 
+    node.navigator.destroy_node()
     node.destroy_node()
-    rclpy.shutdown()
+    if rclpy.ok():
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':

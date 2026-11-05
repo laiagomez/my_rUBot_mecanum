@@ -1,19 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Surt si hi ha cap error
-set -e
+set -euo pipefail
 
-# Variables necessàries per a comunicació ROS 2 correcte
-export ROS_DOMAIN_ID=0
-export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-#export CYCLONEDDS_URI=file:///var/lib/theconstruct.rrl/cyclonedds.xml
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_FILE="${SCRIPT_DIR}/robot.env"
 
-# Prepara l'entorn
+if [[ ! -f "${CONFIG_FILE}" ]]; then
+  echo "Configuration file not found: ${CONFIG_FILE}" >&2
+  exit 1
+fi
+
+set -a
+. "${CONFIG_FILE}"
+set +a
+
 source /opt/ros/humble/setup.bash
-source /home/ubuntu/my_rUBot_mecanum/install/setup.bash
-# Graphical interface (change PC IP address accordingly)
-#export DISPLAY=192.168.1.3:0.0
+source "${ROBOT_WORKSPACE}/install/setup.bash"
 
-# Llança el node
-ros2 launch my_robot_bringup my_robot_bringup_robust_hw.launch.py
-#ros2 run demo_nodes_cpp talker
+exec ros2 launch my_robot_bringup my_robot_bringup_robust_hw.launch.py

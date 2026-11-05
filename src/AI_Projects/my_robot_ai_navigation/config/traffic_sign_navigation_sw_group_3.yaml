@@ -1,0 +1,9 @@
+traffic_sign_navigation:
+  ros__parameters:
+    use_sim_time: true
+    initial_pose: [0.0, 0.0, 0.0]
+    inspection_pose: [0.0, 1.1, 0.0]
+    left_waypoint: [-1.35, 1.50, 3.14]
+    right_waypoint: [0.0, -1.35, 0.0]
+    final_pose: [1.35, -1.35, -1.57]
+    stop_duration: 3.0

@@ -2,8 +2,8 @@ from pathlib import Path
 
 from ultralytics import YOLO
 
-TOOL_ROOT = Path(__file__).resolve().parents[1]
-WORKSPACE_DIR = TOOL_ROOT / "workspace"
+SCRIPT_DIR = Path(__file__).resolve().parent
+WORKSPACE_DIR = SCRIPT_DIR / "workspace"
 PRETRAINED_MODEL = "yolo11n-cls.pt"
 DATASET_DIR = WORKSPACE_DIR / "traffic_sign_dataset"
 OUTPUT_DIR = WORKSPACE_DIR / "runs" / "classify"

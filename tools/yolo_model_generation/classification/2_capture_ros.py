@@ -16,11 +16,11 @@ INTERVAL_SECONDS = 0.5
 FILENAME_PREFIX = "image"
 START_INDEX = 1
 
-# Relative to the project root directory 
+# Relative to the classification workspace.
 OUTPUT_RELATIVE_PATH = "photos/Forbidden"
 
-TOOL_ROOT = Path(__file__).resolve().parents[1]
-WORKSPACE_DIR = TOOL_ROOT / "workspace"
+SCRIPT_DIR = Path(__file__).resolve().parent
+WORKSPACE_DIR = SCRIPT_DIR / "workspace"
 VALID_CLASSES = {"Stop", "Right", "Left", "Give", "Nothing", "Forbidden"}
 
 

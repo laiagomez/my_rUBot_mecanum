@@ -240,23 +240,16 @@ Windows user (or per checkout) and activate it with:
 
 ```powershell
 py -3.11 -m venv .venv-yolo
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\.venv-yolo\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install "ultralytics>=8.3" "numpy<2.0"
 ```
 
-If PowerShell blocks `Activate.ps1`, run the following command in that same
-window, then try activating the environment again:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\.venv-yolo\Scripts\Activate.ps1
-```
-
-`Set-ExecutionPolicy` affects only the current PowerShell window and is needed
-only if PowerShell blocks activation. It does not change the computer-wide
-policy. When you open a new PowerShell window, activate the environment again.
-In Command Prompt, use `.venv-yolo\Scripts\activate.bat` instead.
+Run `Set-ExecutionPolicy` in every new PowerShell window before activating the
+environment. It affects only that window and does not change the computer-wide
+policy. Activate the environment again in every new PowerShell window. In
+Command Prompt, use `.venv-yolo\Scripts\activate.bat` instead.
 
 Ultralytics installs its required Pillow and OpenCV packages, so listing them
 separately is unnecessary. Change `3.11` if another compatible Python version
@@ -266,8 +259,7 @@ than `py -3.11`, so they use this environment.
 ### Verify a classification model from a windows webcamera
 
 From the repository root, activate the YOLO environment in the current
-PowerShell window. If PowerShell blocks the activation, use the policy command
-in the Windows installation section above. To check the available image topic:
+PowerShell window, then check the available image topic:
 
 ```powershell
 .\.venv-yolo\Scripts\Activate.ps1

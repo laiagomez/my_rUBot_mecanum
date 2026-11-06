@@ -34,23 +34,16 @@ you use another compatible Python version, replace `3.11` in the command:
 
 ```powershell
 py -3.11 -m venv .venv-yolo
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\.venv-yolo\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install "ultralytics>=8.3" "numpy<2.0"
 ```
 
-If PowerShell blocks `Activate.ps1`, run this command in the same PowerShell
-window, then activate the environment again:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\.venv-yolo\Scripts\Activate.ps1
-```
-
-This setting only applies to the current PowerShell window. When you open a
-new window, activate the environment again. The policy command is needed only
-if PowerShell blocks activation. Keep the environment active while following
-the commands below. The shared [YOLO documentation](../../../Documentation/05a_Project_TrafficSigns_YOLO_Model.md)
+Run `Set-ExecutionPolicy` in every new PowerShell window before activating the
+environment. It only affects that window and does not change the computer-wide
+policy. Keep the environment active while following the commands below. The
+shared [YOLO documentation](../../../Documentation/05a_Project_TrafficSigns_YOLO_Model.md)
 has installation notes for Ubuntu and ROS 2.
 
 ## 1. Create the work folders
@@ -80,14 +73,28 @@ annotated Roboflow dataset into `detection/workspace/roboflow/`.
 The workspace is local and ignored by Git, so photos, datasets, and training
 outputs will not be committed.
 
+To capture photos with the laptop webcam, open PowerShell at the repository
+root, activate `.venv-yolo`, and run the numbered capture script from the
+folder for the class. For example:
+
+```powershell
+Set-Location tools\yolo_model_generation\detection\workspace\photos\Stop
+python ..\..\..\..\classification\2_capture_webcam.py
+```
+
+The capture script shows a preview and prints each saved photo number. Press
+Ctrl+C in the terminal or `q` in the preview window to stop. Repeat in the
+folder for each class, then upload the photos to Roboflow.
+
 ## 2. Create a Roboflow project
 
 1. Open [Roboflow](https://roboflow.com/) and sign in or create an account.
 2. Create a workspace and a new object detection project.
 3. Use **Traditional Model Builder** if Roboflow offers that option.
 4. Add the five classes listed above.
-5. Upload the traffic sign images. You can start with the images collected for
-   the classification dataset.
+5. Upload the traffic sign images from
+   `detection/workspace/photos/<ClassName>/`. You can also use photos from the
+   classification dataset.
 
 For a first-time overview, see the
 [Roboflow introductory tutorial](https://blog.roboflow.com/getting-started-with-roboflow/).

@@ -35,23 +35,16 @@ you use another compatible Python version, replace `3.11` in the command:
 
 ```powershell
 py -3.11 -m venv .venv-yolo
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\.venv-yolo\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install "ultralytics>=8.3" "numpy<2.0"
 ```
 
-If PowerShell blocks `Activate.ps1`, run this command in the same PowerShell
-window, then activate the environment again:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\.venv-yolo\Scripts\Activate.ps1
-```
-
-This setting only applies to the current PowerShell window. When you open a
-new window, activate the environment again. The policy command is needed only
-if PowerShell blocks activation. Keep the environment active while following
-the commands below. The shared [YOLO documentation](../../../Documentation/05a_Project_TrafficSigns_YOLO_Model.md)
+Run `Set-ExecutionPolicy` in every new PowerShell window before activating the
+environment. It only affects that window and does not change the computer-wide
+policy. Keep the environment active while following the commands below. The
+shared [YOLO documentation](../../../Documentation/05a_Project_TrafficSigns_YOLO_Model.md)
 has installation notes for Ubuntu and ROS 2.
 
 ## 1. Create the work folders
@@ -96,9 +89,14 @@ Set-Location tools\yolo_model_generation\classification\workspace\photos\Stop
 python ..\..\..\2_capture_webcam.py
 ```
 
-The script saves an image every half second in the current folder. Press
-Ctrl+C in the terminal to stop. Repeat from the matching folder for each
-class. Do not mix signs from different classes in one folder.
+The preview window shows the current camera image and photo number. The
+terminal also prints each saved photo number and filename. The script saves
+one image every half second in the current folder. Press Ctrl+C in the
+terminal or `q` in the preview window to stop. Repeat from the matching folder
+for each class. Do not mix signs from different classes in one folder.
+If you restart capture, it continues with the next number instead of
+overwriting existing photos. To collect about 100 photos, watch the terminal
+and stop when it reaches photo 100.
 For the next steps, open a new PowerShell window in the repository root or
 return to the repository root and activate the YOLO environment again if
 needed.
@@ -115,7 +113,11 @@ python tools/yolo_model_generation/classification/2_capture_ros.py
 ```
 
 Repeat for each class. The script saves images under
-`tools/yolo_model_generation/classification/workspace/photos/`.
+`tools/yolo_model_generation/classification/workspace/photos/`. Its preview
+window displays the current saved image and photo number; the terminal prints
+the number and filename. Press Ctrl+C in the terminal to stop. If capture is
+restarted, it continues with the next number instead of overwriting existing
+photos.
 
 ## 3. Prepare the dataset
 

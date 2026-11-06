@@ -34,8 +34,11 @@ counter = max([start_index - 1, *existing_indices]) + 1
 
 print("Camera started successfully")
 print(f"Saving images in: {output_dir}")
-print("Check the preview to make sure the sign is in frame.")
+print("Check the preview. Press 's' to start saving photos.")
 print("Press Ctrl+C or 'q' in the preview window to stop.")
+
+capturing = False
+last_capture_time = 0.0
 
 try:
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
@@ -45,31 +48,42 @@ try:
         if not ret:
             raise RuntimeError("Could not capture an image from the camera")
 
-        filename = output_dir / f"{filename_prefix}_{counter}.jpg"
-
-        if not cv2.imwrite(str(filename), frame):
-            raise RuntimeError(f"Could not save image: {filename}")
-
-        print(f"Photo {counter}: saved {filename}", flush=True)
-
         preview = frame.copy()
+        instruction = (
+            "Press 'S' to start | 'Q' to quit"
+            if not capturing
+            else f"Capturing photo {counter} | Ctrl+C or 'Q' to stop"
+        )
         cv2.putText(
             preview,
-            f"Photo {counter}",
+            instruction,
             (10, 30),
             cv2.FONT_HERSHEY_SIMPLEX,
-            1.0,
+            0.7,
             (0, 255, 0),
             2,
             cv2.LINE_AA,
         )
         cv2.imshow(window_name, preview)
-        if cv2.waitKey(1) & 0xFF == ord("q"):
+
+        key = cv2.waitKey(1) & 0xFF
+        if key in (ord("q"), ord("Q")):
             print("Stop requested from preview window")
             break
 
-        counter += 1
-        time.sleep(interval_seconds)
+        current_time = time.monotonic()
+        if not capturing and key in (ord("s"), ord("S")):
+            capturing = True
+            print("Capture started")
+
+        if capturing and current_time - last_capture_time >= interval_seconds:
+            filename = output_dir / f"{filename_prefix}_{counter}.jpg"
+            if not cv2.imwrite(str(filename), frame):
+                raise RuntimeError(f"Could not save image: {filename}")
+
+            print(f"Photo {counter}: saved {filename}", flush=True)
+            counter += 1
+            last_capture_time = current_time
 
 except KeyboardInterrupt:
     print("\nCapture stopped by Ctrl+C")

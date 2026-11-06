@@ -89,11 +89,13 @@ Set-Location tools\yolo_model_generation\classification\workspace\photos\Stop
 python ..\..\..\2_capture_webcam.py
 ```
 
-The preview window shows the current camera image and photo number. The
-terminal also prints each saved photo number and filename. The script saves
-one image every half second in the current folder. Press Ctrl+C in the
-terminal or `q` in the preview window to stop. Repeat from the matching folder
-for each class. Do not mix signs from different classes in one folder.
+The preview window shows the live camera image. Position the sign, then press
+`s` in the preview window to start saving. The terminal prints each saved
+photo number and filename, and the window shows the current capture status.
+The frame shown when you press `s` is saved as the first photo. The script
+saves one image every half second in the current folder. Press
+Ctrl+C in the terminal or `q` in the preview window to stop. Repeat from the
+matching folder for each class. Do not mix signs from different classes in one folder.
 If you restart capture, it continues with the next number instead of
 overwriting existing photos. To collect about 100 photos, watch the terminal
 and stop when it reaches photo 100.
@@ -115,7 +117,9 @@ python tools/yolo_model_generation/classification/2_capture_ros.py
 Repeat for each class. The script saves images under
 `tools/yolo_model_generation/classification/workspace/photos/`. Its preview
 window displays the current saved image and photo number; the terminal prints
-the number and filename. Press Ctrl+C in the terminal to stop. If capture is
+the number and filename. Position the sign, then press `s` in the preview
+window to save the current frame and start capturing. Press Ctrl+C in the
+terminal to stop. If capture is
 restarted, it continues with the next number instead of overwriting existing
 photos.
 

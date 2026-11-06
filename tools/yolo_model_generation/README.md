@@ -53,8 +53,10 @@ cd tools/yolo_model_generation/classification/workspace/photos/Stop
 python ../../../2_capture_webcam.py
 ```
 
-The capture window previews the camera image. The terminal prints the photo
-number and filename. Press Ctrl+C or `q` in the preview window to stop.
+The capture window previews the live camera image. Press `s` when the sign is
+in frame to save the current image and start saving photos. The terminal
+prints each photo number and filename. Press Ctrl+C or `q` in the preview
+window to stop.
 For about 100 photos, stop when the terminal reaches photo 100.
 
 For a ROS 2 camera, set `IMAGE_TOPIC` and `OUTPUT_RELATIVE_PATH` in

@@ -50,6 +50,7 @@ class ImageCaptureNode(Node):
         self.filename_prefix = FILENAME_PREFIX
 
         self.last_capture_time = 0.0
+        self.capturing = False
         self.bridge = CvBridge()
 
         self.output_path = get_output_path()
@@ -66,7 +67,7 @@ class ImageCaptureNode(Node):
 
         self.get_logger().info(f"Subscribed to topic: {self.image_topic}")
         self.get_logger().info(f"Saving images in: {self.output_path}")
-        self.get_logger().info("Check the preview to make sure the sign is in frame.")
+        self.get_logger().info("Check the preview, then press 's' to start saving photos.")
         self.get_logger().info("Press Ctrl+C to stop")
         cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
 
@@ -80,41 +81,52 @@ class ImageCaptureNode(Node):
         return max([START_INDEX - 1, *existing_indices]) + 1
 
     def image_callback(self, msg):
-        current_time = time.time()
-
-        if current_time - self.last_capture_time < self.interval_seconds:
-            return
-
         try:
             frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
         except Exception as e:
             self.get_logger().error(f"cv_bridge error: {e}")
             return
 
-        filename = f"{self.filename_prefix}_{self.counter}.jpg"
-        filepath = self.output_path / filename
+        preview = frame.copy()
+        instruction = (
+            "Press 'S' to start | Ctrl+C to quit"
+            if not self.capturing
+            else f"Capturing photo {self.counter} | Ctrl+C to stop"
+        )
+        cv2.putText(
+            preview,
+            instruction,
+            (10, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.7,
+            (0, 255, 0),
+            2,
+            cv2.LINE_AA,
+        )
+        cv2.imshow(WINDOW_NAME, preview)
+        key = cv2.waitKey(1) & 0xFF
 
-        success = cv2.imwrite(str(filepath), frame)
+        if key in (ord("q"), ord("Q")):
+            self.get_logger().info("Stop requested from preview window")
+            rclpy.shutdown()
+            return
 
-        if success:
-            self.get_logger().info(f"Photo {self.counter}: saved {filepath}")
-            preview = frame.copy()
-            cv2.putText(
-                preview,
-                f"Photo {self.counter}",
-                (10, 30),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                1.0,
-                (0, 255, 0),
-                2,
-                cv2.LINE_AA,
-            )
-            cv2.imshow(WINDOW_NAME, preview)
-            cv2.waitKey(1)
-            self.counter += 1
-            self.last_capture_time = current_time
-        else:
-            self.get_logger().error(f"Could not save image: {filepath}")
+        if not self.capturing and key in (ord("s"), ord("S")):
+            self.capturing = True
+            self.get_logger().info("Capture started")
+
+        current_time = time.monotonic()
+        if (
+            self.capturing
+            and current_time - self.last_capture_time >= self.interval_seconds
+        ):
+            filepath = self.output_path / f"{self.filename_prefix}_{self.counter}.jpg"
+            if cv2.imwrite(str(filepath), frame):
+                self.get_logger().info(f"Photo {self.counter}: saved {filepath}")
+                self.counter += 1
+                self.last_capture_time = current_time
+            else:
+                self.get_logger().error(f"Could not save image: {filepath}")
 
 
 def main(args=None):
@@ -129,7 +141,8 @@ def main(args=None):
     finally:
         node.destroy_node()
         cv2.destroyAllWindows()
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 if __name__ == "__main__":

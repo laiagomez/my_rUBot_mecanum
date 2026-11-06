@@ -82,9 +82,11 @@ Set-Location tools\yolo_model_generation\detection\workspace\photos\Stop
 python ..\..\..\..\classification\2_capture_webcam.py
 ```
 
-The capture script shows a preview and prints each saved photo number. Press
-Ctrl+C in the terminal or `q` in the preview window to stop. Repeat in the
-folder for each class, then upload the photos to Roboflow.
+The capture script shows a live preview and prints each saved photo number.
+Position the sign, then press `s` in the preview window to start saving. Press
+the current frame is saved as the first photo. Press Ctrl+C in the terminal or
+`q` in the preview window to stop. Repeat in the folder for each class, then
+upload the photos to Roboflow.
 
 ## 2. Create a Roboflow project
 

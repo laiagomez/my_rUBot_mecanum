@@ -6,7 +6,8 @@ from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
 from std_msgs.msg import String
 from nav2_simple_commander.robot_navigator import BasicNavigator
-from tf_transformations import quaternion_from_euler
+#from tf_transformations import quaternion_from_euler
+import math
 
 
 class TrafficSignNavigation(Node):
@@ -45,7 +46,7 @@ class TrafficSignNavigation(Node):
 
     def create_pose(self, values):
         x, y, yaw = values
-        qx, qy, qz, qw = quaternion_from_euler(0.0, 0.0, yaw)
+        qx, qy, qz, qw = 0.0, 0.0, math.sin(yaw/2.0), math.cos(yaw/2.0)
 
         pose = PoseStamped()
         pose.header.frame_id = 'map'

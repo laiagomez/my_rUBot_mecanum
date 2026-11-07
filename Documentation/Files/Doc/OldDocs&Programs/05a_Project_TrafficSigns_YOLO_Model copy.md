@@ -186,7 +186,7 @@ The traffic signs that we want to identify are:
 - Give Way
 - No Entry 
 
-![](./Images/07_Yolo/TrafficSigns.png)
+![](../../../../tools/yolo_model_generation/classification/images/TrafficSigns.png)
 
 ## Installation
 ```bash
@@ -262,7 +262,7 @@ traffic_sign_dataset/
 To label the traffic signs in the images and train a model, we will use Roboflow:
 
 - Open [Roboflow](https://roboflow.com/) in a new browser tab.
-    ![](./Images/07_Yolo/01_roboflow.png)
+    ![](../../../../tools/yolo_model_generation/detection/images/01_roboflow.png)
 - Select **Get Started** or **Sign In**, and then **Continue with Google**.
 - Enter a workspace name, for example `TrafficSignals`.
 - Select the **Public Plan**.
@@ -270,35 +270,35 @@ To label the traffic signs in the images and train a model, we will use Roboflow
 - Create the workspace.
 - Answer the introductory questions.
 - For **What type of model would you like to deploy?**, select **Object Detection**.
-    ![](./Images/07_Yolo/02_Object_detection1.jpg)
+    ![](../../../../tools/yolo_model_generation/detection/images/02_Object_detection1.jpg)
 - See the [Roboflow introductory tutorial](https://blog.roboflow.com/getting-started-with-roboflow/).
 
 - Create a project in the workspace:
     - Select **Projects**, choose **New Project**, enter a name, and click **Continue with Public**.
-        ![](./Images/07_Yolo/02_Object_detection1.jpg)
+        ![](../../../../tools/yolo_model_generation/detection/images/02_Object_detection1.jpg)
     - Select **Use Traditional Model Builder Instead** to retain full control of the YOLO model for robotics projects.
     - Create five classes: `Stop`, `Right`, `Left`, `Give`, and `Forbidden`.
     - Keep one local folder per class containing the images captured previously.
     - Choose **Select Folder** to upload images from a local folder. Upload all the project images.
-        ![](./Images/07_Yolo/04_Project2.png)
+        ![](../../../../tools/yolo_model_generation/detection/images/04_Project2.png)
     - Select **Save & Continue**, followed by **Start Labeling**.
     - You can assign images to different invited team members.
     - Select **Start Annotating** and repeat the process for each class.
-        ![](./Images/07_Yolo/05_Label.png)
+        ![](../../../../tools/yolo_model_generation/detection/images/05_Label.png)
     - If you make an error, open the three-dot menu in **Layers** and change the class.
-        ![](./Images/07_Yolo/06_Label_error.png)
+        ![](../../../../tools/yolo_model_generation/detection/images/06_Label_error.png)
     - When finished, go back using the arrow in the upper-left corner and select **Add Images to Dataset**.
     - Select **Use Existing Values**, and then **Add Images**.
     - Select **Train Model** and **Custom Training**.
     - Edit **Train/Valid/Test Split**, select **Balance**, and assign 80% to training, 15% to validation, and 5% to testing.
-        ![](./Images/07_Yolo/07_train_balance.png)
+        ![](../../../../tools/yolo_model_generation/detection/images/07_train_balance.png)
     - Select **Continue** for the remaining options.
     - Under **Augmentation**, select **Shear** to account for variations along the x- and y-axes.
-        ![](./Images/07_Yolo/08_shear.png)
+        ![](../../../../tools/yolo_model_generation/detection/images/08_shear.png)
     - Select **Create**.
     - Select **Download Dataset**, choose the **YOLOv8** format, and select **Download ZIP to Computer**. The ZIP file contains the training, validation, and test images together with the `data.yaml` file used to obtain the final model.
 
- <img src="./Images/07_Yolo/09_DataSet.png" width="400"/>  <img src="./Images/07_Yolo/09_DataSet2.png" width="200"/> 
+ <img src="../../../../tools/yolo_model_generation/detection/images/09_DataSet.png" width="400"/>  <img src="../../../../tools/yolo_model_generation/detection/images/09_DataSet2.png" width="200"/>
 
 - **To test the model prediction** with the identification model `yolov8n_identification_signals.pt`:
     - Using your computer webcam:

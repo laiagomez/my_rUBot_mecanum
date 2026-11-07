@@ -3,10 +3,10 @@
 In robot perception, four common vision tasks are typically
 used:
 
--   Image Classification
--   Object Detection
--   Image Segmentation
--   Pose Estimation
+- Image Classification
+- Object Detection
+- Image Segmentation
+- Pose Estimation
 
 These tasks progressively increase spatial understanding of the scene.
 
@@ -26,14 +26,13 @@ filtering - simple scene understanding
 In our traffic‑sign project we use **classification**, because each
 frame contains a single relevant sign.
 
-
 ## Object Detection
 
 Object detection identifies:
 
--   object class
--   object position
--   bounding box coordinates
+- object class
+- object position
+- bounding box coordinates
 
 Example:
 
@@ -43,14 +42,12 @@ Useful when multiple objects appear simultaneously.
 
 Typical robotics use:
 
--   obstacle detection
--   people detection
--   multi‑sign navigation
-
+- obstacle detection
+- people detection
+- multi‑sign navigation
 
 Detection could be added later to our project using datasets annotated
 with tools such as **Roboflow**.
-
 
 ## Image Segmentation
 
@@ -60,11 +57,10 @@ Instead of bounding boxes, it produces masks.
 
 Typical robotics use:
 
--   road detection
--   hand contour extraction
--   grasp planning
--   environment mapping
-
+- road detection
+- hand contour extraction
+- grasp planning
+- environment mapping
 
 Segmentation provides higher spatial precision but requires more
 computation.
@@ -76,18 +72,17 @@ humans.
 
 Example:
 
--   shoulders
--   elbows
--   wrists
--   knees
+- shoulders
+- elbows
+- wrists
+- knees
 
 Typical robotics use:
 
--   gesture recognition
--   human‑robot interaction
--   hand tracking
--   collaborative robotics
-
+- gesture recognition
+- human‑robot interaction
+- hand tracking
+- collaborative robotics
 
 Pose estimation is useful for interaction tasks such as detecting a
 handshake or a raised hand.
@@ -96,25 +91,24 @@ handshake or a raised hand.
 
 Image from: https://www.dfrobot.com/blog-13844.html
 
-
 ## YOLO
 
 YOLO (You Only Look Once) is a family of real-time object detection models based on deep learning.
 
 We use YOLO because:
 
--   it runs in real time
--   it works well on CPU systems
--   it supports classification, detection, segmentation and pose
-    estimation
--   it integrates easily with ROS 2 pipelines
+- it runs in real time
+- it works well on CPU systems
+- it supports classification, detection, segmentation and pose
+  estimation
+- it integrates easily with ROS 2 pipelines
 
 Alternative frameworks exist:
 
--   Detectron2
--   Faster R‑CNN
--   EfficientDet
--   RT‑DETR
+- Detectron2
+- Faster R‑CNN
+- EfficientDet
+- RT‑DETR
 
 However, YOLO provides the best balance between speed, simplicity, and
 accuracy for robotics education.
@@ -131,18 +125,17 @@ accuracy for robotics education.
 | 2024 | YOLO11  | Higher efficiency and better small-object detection |
 | 2025 | YOLO26  | Unified detection pipeline without NMS              |
 
-
 ## Ultralytics
 
 Ultralytics is a Python library for training and running YOLO-based computer vision models.
 
 We use **Ultralytics Python library** because it:
 
--   simplifies training workflows
--   supports custom datasets
--   exports `.pt` models easily
--   runs efficiently on embedded platforms
--   integrates well with real‑time camera pipelines
+- simplifies training workflows
+- supports custom datasets
+- exports `.pt` models easily
+- runs efficiently on embedded platforms
+- integrates well with real‑time camera pipelines
 
 ## Current Strategy in the Traffic Sign Project
 
@@ -152,9 +145,9 @@ Traffic signs → **classification model**
 
 Advantages:
 
--   simple dataset structure
--   fast training
--   efficient inference on mobile robots
+- simple dataset structure
+- fast training
+- efficient inference on mobile robots
 
 Future extension:
 
@@ -176,21 +169,22 @@ inside the same image.
 ## Objectives
 
 The traffic signs that we want to identify are:
+
 - Stop
 - Right route: turning left is forbidden
 - Left route: turning right is forbidden
 - Give Way
-- No Entry 
+- No Entry
 
-![](./Images/07_Yolo/TrafficSigns.png)
+![](../tools/yolo_model_generation/classification/images/TrafficSigns.png)
 
 The `Right` and `Left` class names represent the navigation action selected by
 the sign, not the direction crossed by the red prohibition bar:
 
-| Visual sign | Dataset class | Navigation result |
-| --- | --- | --- |
-| No left turn | `Right` | Use the right route |
-| No right turn | `Left` | Use the left route |
+| Visual sign   | Dataset class | Navigation result   |
+| ------------- | ------------- | ------------------- |
+| No left turn  | `Right`     | Use the right route |
+| No right turn | `Left`      | Use the left route  |
 
 ## Repository layout and data policy
 
@@ -252,9 +246,10 @@ python -m pip install --upgrade pip
 python -m pip install "ultralytics>=8.3" "numpy<2.0"
 ```
 
-`Set-ExecutionPolicy` affects only the current PowerShell window; it is needed
-only if PowerShell blocks `Activate.ps1`. It does not change the computer-wide
-policy. On Command Prompt, use `.venv-yolo\Scripts\activate.bat` instead.
+Run `Set-ExecutionPolicy` in every new PowerShell window before activating the
+environment. It affects only that window and does not change the computer-wide
+policy. Activate the environment again in every new PowerShell window. In
+Command Prompt, use `.venv-yolo\Scripts\activate.bat` instead.
 
 Ultralytics installs its required Pillow and OpenCV packages, so listing them
 separately is unnecessary. Change `3.11` if another compatible Python version
@@ -263,20 +258,19 @@ than `py -3.11`, so they use this environment.
 
 ### Verify a classification model from a windows webcamera
 
-From the repository root, activate the YOLO environment, then verify
-the available image topic:
+From the repository root, activate the YOLO environment in the current
+PowerShell window, then check the available image topic:
 
-```bash
-cd my_rUBot_mecanum
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```powershell
 .\.venv-yolo\Scripts\Activate.ps1
 ```
 
 Run the standalone classifier:
 
 ```bash
-python tools/yolo_model_generation/classification/infer_webcam.py
+python tools/yolo_model_generation/classification/5_infer_webcam.py
 ```
+
 ![yolo](./Images/07_Yolo/infer_webcam1.png)
 
 ### Ubuntu or a ROS 2 development container
@@ -321,7 +315,7 @@ ros2 topic hz /image_raw
 Run the standalone classifier:
 
 ```bash
-python tools/yolo_model_generation/classification/infer_ros.py
+python tools/yolo_model_generation/classification/5_infer_ros.py
 ```
 
 By default it uses
@@ -331,7 +325,7 @@ and subscribes to `/image_raw`. Press `q` in the OpenCV window to exit.
 For Gazebo, the camera topic is normally `/camera/image_raw`:
 
 ```bash
-python tools/yolo_model_generation/classification/infer_ros.py \
+python tools/yolo_model_generation/classification/5_infer_ros.py \
   --image-topic /camera/image_raw
 ```
 
@@ -339,138 +333,40 @@ To verify another model saved in `yolo_models/`, pass its filename. Relative
 model paths are resolved from the `classification/` directory:
 
 ```bash
-python tools/yolo_model_generation/classification/infer_ros.py \
+python tools/yolo_model_generation/classification/5_infer_ros.py \
   --model yolo_models/yolo11n_cls_g2.pt \
   --image-topic /image_raw
 ```
 
 Models created by training remain in
-`workspace/runs/classify/train/weights/best.pt`. Once a model is validated,
+`tools/yolo_model_generation/classification/workspace/runs/classify/train/weights/best.pt`.
+Once a model is validated,
 copy it to `classification/yolo_models/` for standalone testing and to
 `src/AI_Projects/my_robot_ai_perception/models/` for ROS 2 deployment. Use the
 same explicit versioned filename in both locations.
 
-## 1. YOLO Model Generation for a Classification Task
+### Verify an object-detection model
 
-For traffic sign classification, we will use the pretrained YOLO11 model.
-- Create the following initial folder structure:
+The detection verification scripts use the latest training output at
+`tools/yolo_model_generation/detection/workspace/runs/detect/train/weights/best.pt`.
+From the repository root, activate the YOLO environment and run either:
 
-```text
-photos/
-├── Stop/
-├── Right/
-├── Left/
-├── Give/
-├── Nothing/
-└── Forbidden/
+```bash
+python tools/yolo_model_generation/detection/5_infer_webcam.py
 ```
-- Capture around 200 images of each traffic sign using different positions, lighting conditions, backgrounds, and viewing angles.
-    - If you want to use your computer webcam: 
-        - Open a terminal in `tools/yolo_model_generation/workspace/photos/Stop`, for example.
-        - Run `tools/yolo_model_generation/classification/capture_webcam.py`.
-    - If you want to use the rUBot camera: 
-        - Use `tools/yolo_model_generation/classification/capture_ros.py` to read images from the configured ROS 2 image topic and save them in the selected class folder.
-        - In a new terminal, run:
 
-        ```bash
-        python tools/yolo_model_generation/classification/capture_ros.py
-        ```
-        - Verify the topic name and change `OUTPUT_RELATIVE_PATH` for each traffic sign. Images are saved under `tools/yolo_model_generation/workspace/photos/`.
-- Use `tools/yolo_model_generation/classification/prepare_dataset.py` to resize the images to 640 × 640 pixels and create the following dataset structure:
-```text
-traffic_sign_dataset/
-├── train/
-│   ├── Stop/
-│   ├── Right/
-│   ├── Left/
-│   ├── Give/
-│   ├── Nothing/
-│   └── Forbidden/
-└── val/
-    ├── Stop/
-    ├── Right/
-    ├── Left/
-    ├── Give/
-    ├── Nothing/
-    └── Forbidden/
+For a ROS 2 camera, start the camera or robot bringup, source ROS 2, and run:
+
+```bash
+python tools/yolo_model_generation/detection/5_infer_ros.py
 ```
-> `TRAIN_RATIO = 0.80`: 80% of the images are used for training and 20% for validation.
-- Train the classification model with `tools/yolo_model_generation/classification/train.py`.
-- The model will be generated at `tools/yolo_model_generation/workspace/runs/classify/train/weights/best.pt`.
-- **To test the model prediction** with the classification model `best.pt`:
-    - Using your computer webcam:
-        - Run `tools/yolo_model_generation/classification/infer_webcam.py`.
-    - If you want to use the rUBot camera: 
-        - Use `tools/yolo_model_generation/classification/infer_ros.py` to read images from the configured ROS 2 topic and classify them in real time.
-        - In a new terminal, run:
 
-        ```bash
-        python tools/yolo_model_generation/classification/infer_ros.py
-        ```
-        - Verify the topic name and `MODEL_PATH`.
+The ROS script uses `/image_raw` by default. Change `IMAGE_TOPIC` in
+`detection/5_infer_ros.py` if your camera publishes on another topic. Press `q`
+to close the webcam window; press Ctrl+C to stop the ROS 2 script.
 
-## 2. YOLO Model Generation for an Object-Detection Task
-
-To label the traffic signs in the images and train a model, we will use Roboflow:
-
-- Open [Roboflow](https://roboflow.com/) in a new browser tab.
-    ![](./Images/07_Yolo/01_roboflow.png)
-- Select **Get Started** or **Sign In**, and then **Continue with Google**.
-- Enter a workspace name, for example `TrafficSignals`.
-- Select the **Public Plan**.
-- You can invite up to four project partners to collaborate on model generation. The suggested role for team members is **Admin**.
-- Create the workspace.
-- Answer the introductory questions.
-- For **What type of model would you like to deploy?**, select **Object Detection**.
-    ![](./Images/07_Yolo/02_Object_detection1.jpg)
-- See the [Roboflow introductory tutorial](https://blog.roboflow.com/getting-started-with-roboflow/).
-
-- Create a project in the workspace:
-    - Select **Projects**, choose **New Project**, enter a name, and click **Continue with Public**.
-        ![](./Images/07_Yolo/02_Object_detection1.jpg)
-    - Select **Use Traditional Model Builder Instead** to retain full control of the YOLO model for robotics projects.
-    - Create five classes: `Stop`, `Right`, `Left`, `Give`, and `Forbidden`.
-    - Keep one local folder per class containing the images captured previously.
-    - Choose **Select Folder** to upload images from a local folder. Upload all the project images.
-        ![](./Images/07_Yolo/04_Project2.png)
-    - Select **Save & Continue**, followed by **Start Labeling**.
-    - You can assign images to different invited team members.
-    - Select **Start Annotating** and repeat the process for each class.
-        ![](./Images/07_Yolo/05_Label.png)
-    - If you make an error, open the three-dot menu in **Layers** and change the class.
-        ![](./Images/07_Yolo/06_Label_error.png)
-    - When finished, go back using the arrow in the upper-left corner and select **Add Images to Dataset**.
-    - Select **Use Existing Values**, and then **Add Images**.
-    - Select **Train Model** and **Custom Training**.
-    - Edit **Train/Valid/Test Split**, select **Balance**, and assign 80% to training, 15% to validation, and 5% to testing.
-        ![](./Images/07_Yolo/07_train_balance.png)
-    - Select **Continue** for the remaining options.
-    - Under **Augmentation**, select **Shear** to account for variations along the x- and y-axes.
-        ![](./Images/07_Yolo/08_shear.png)
-    - Select **Create**.
-    - Select **Download Dataset**, choose the **YOLOv8** format, and select **Download ZIP to Computer**. The ZIP file contains the training, validation, and test images together with the `data.yaml` file used to obtain the final model.
-
- <img src="./Images/07_Yolo/09_DataSet.png" width="400"/>  <img src="./Images/07_Yolo/09_DataSet2.png" width="200"/> 
-
-- Place the exported Roboflow dataset and its `data.yaml` under
-  `tools/yolo_model_generation/workspace/roboflow/`.
-- Train the detection model with:
-
-    ```bash
-    python tools/yolo_model_generation/detection/train.py
-    ```
-
-- **To test the model prediction** with the trained object-detection model:
-    - Using your computer webcam:
-        - Run `tools/yolo_model_generation/detection/infer_webcam.py`.
-    - If you want to use the rUBot camera: 
-        - Verify the ROS image topic in `tools/yolo_model_generation/detection/infer_ros.py`.
-        - In a new terminal, run:
-
-        ```bash
-        python tools/yolo_model_generation/detection/infer_ros.py
-        ```
-
+For model creation steps, see the [classification guide](../tools/yolo_model_generation/classification/yolo_classification_model_generation.md)
+and the [detection guide](../tools/yolo_model_generation/detection/yolo_detection_model_generation.md).
 
 ## 3. Pose Estimation
 
@@ -478,18 +374,21 @@ Pose estimation detects **keypoints of articulated bodies**, typically
 humans.
 
 - From the repository root, activate the YOLO environment, then verify
-the available image topic:
+  the available image topic:
 
-    ```bash
-    cd my_rUBot_mecanum
-    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-    .\.venv-yolo\Scripts\Activate.ps1
-    ```
+  ```powershell
+  .\.venv-yolo\Scripts\Activate.ps1
+  ```
+
+  If PowerShell blocks activation, run
+  `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` in this window,
+  then activate the environment again. Only use this command when activation
+  is blocked.
 - Run the Python program:
 
-    ```bash
-    python tools/yolo_model_generation/pose/pose_gesture_webcam.py
-    ```
+  ```bash
+  python tools/yolo_model_generation/pose/pose_gesture_webcam.py
+  ```
 
 ![](./Images/07_Yolo/01_Yolo_Pose_Detection.png)
 ![](./Images/07_Yolo/01_Yolo_Pose_Detection2.png)

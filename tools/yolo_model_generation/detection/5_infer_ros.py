@@ -14,8 +14,8 @@ from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 # ==============================
 # GLOBAL PARAMETERS
 # ==============================
-TOOL_ROOT = Path(__file__).resolve().parents[1]
-MODEL_PATH = TOOL_ROOT / "workspace" / "runs" / "detect" / "train" / "weights" / "best.pt"
+SCRIPT_DIR = Path(__file__).resolve().parent
+MODEL_PATH = SCRIPT_DIR / "workspace" / "runs" / "detect" / "train" / "weights" / "best.pt"
 
 IMAGE_TOPIC = "/image_raw"
 

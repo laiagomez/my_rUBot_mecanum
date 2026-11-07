@@ -181,7 +181,7 @@ The signals that we want to identify are:
 - Give Way
 - No Entry 
 
-![](./Images/07_Yolo/TrafficSigns.png)
+![](../../../../tools/yolo_model_generation/classification/images/TrafficSigns.png)
 
 ## Installation
 ````bash
@@ -253,7 +253,7 @@ traffic_sign_dataset/
 
 To properly label signs in the images and train a model we will use "roboflow":
 - Open a new google tab: https://roboflow.com/
-    ![](./Images/07_Yolo/01_roboflow.png)
+    ![](../../../../tools/yolo_model_generation/detection/images/01_roboflow.png)
 - Select "Get Started" or "Sign In" and "Continue with Google"
 - Select a Name of the workspace (i.e. TrafficSignals)
 - Select "Public Plan"
@@ -261,35 +261,35 @@ To properly label signs in the images and train a model we will use "roboflow":
 - Create a workspace
 - Answer some objective questions
 - Select "What type of model would you like to deploy?". Type "Object Detection"
-    ![](./Images/07_Yolo/02_Object_detection1.jpg)
+    ![](../../../../tools/yolo_model_generation/detection/images/02_Object_detection1.jpg)
 - There is a short Roboflow tutorial video: https://blog.roboflow.com/getting-started-with-roboflow/
 
 - Create a project in our created "Workspace":
     - Select Projects and choose ``new project``, choose a name and click on `Continue with Public`
-        ![](./Images/07_Yolo/02_Object_detection1.jpg)
+        ![](../../../../tools/yolo_model_generation/detection/images/02_Object_detection1.jpg)
     - Select `Use Traditional Model Builder Instead` to have whole control of YOLO model in Robotic projects
     - You have 5 different classes: Stop, Right, Left, Give, Forbidden
     - You will have in your local PC one folder per Class with the different photos you have taken previously.
     -Choose `Select Folder` to upload pictures from a local folder. Upload all the images on this project.
-        ![](./Images/07_Yolo/04_Project2.png)
+        ![](../../../../tools/yolo_model_generation/detection/images/04_Project2.png)
     - Type ``save&continue`` and ``start labeling`` to label all traffic signs pictures
     - You can assign some pictures to different Invited team members
     - Select ``start anotating``. You will do it for each Class.
-        ![](./Images/07_Yolo/05_Label.png)
+        ![](../../../../tools/yolo_model_generation/detection/images/05_Label.png)
     - If you make an error, type ``layers`` 3point menu and change class
-        ![](./Images/07_Yolo/06_Label_error.png)
+        ![](../../../../tools/yolo_model_generation/detection/images/06_Label_error.png)
     - When finished go back (left corner arrow) and select ``add xx images to Dataset``.
     - Select Method ``use existing values`` and press ``add images``
     - Select ``train model`` and ``custom training``
     - Edit ``train test/split`` select ``balance`` (select % of training (80%) / Validating (15%) / Test (5%))
-        ![](./Images/07_Yolo/07_train_balance.png)
+        ![](../../../../tools/yolo_model_generation/detection/images/07_train_balance.png)
     - select ``continue`` for the other options
     - select ``augmentation`` and ``shear`` to proper consider rotations in x and y axis
-        ![](./Images/07_Yolo/08_shear.png)
+        ![](../../../../tools/yolo_model_generation/detection/images/08_shear.png)
     - type ``create``
     - type ``download Data set`` choose format ``yolov8`` and ``Download zip to computer``. Save this zip file to your computer. This contains images (for train, valid and test) and data.yaml used in the next section to obtain the final model.
 
- <img src="./Images/07_Yolo/09_DataSet.png" width="400"/>  <img src="./Images/07_Yolo/09_DataSet2.png" width="200"/> 
+ <img src="../../../../tools/yolo_model_generation/detection/images/09_DataSet.png" width="400"/>  <img src="../../../../tools/yolo_model_generation/detection/images/09_DataSet2.png" width="200"/>
 
 - **To test the model prediction** with the identification model `yolov8n_identification_signals.pt`:
     - Using your computer webcam:

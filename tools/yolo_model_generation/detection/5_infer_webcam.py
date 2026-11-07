@@ -7,8 +7,8 @@ from pathlib import Path
 # ==============================
 # PARAMETERS
 # ==============================
-TOOL_ROOT = Path(__file__).resolve().parents[1]
-MODEL_PATH = TOOL_ROOT / "workspace" / "runs" / "detect" / "train" / "weights" / "best.pt"
+SCRIPT_DIR = Path(__file__).resolve().parent
+MODEL_PATH = SCRIPT_DIR / "workspace" / "runs" / "detect" / "train" / "weights" / "best.pt"
 
 CAMERA_INDEX = 0
 WINDOW_NAME = "YOLO Traffic Sign Detection"

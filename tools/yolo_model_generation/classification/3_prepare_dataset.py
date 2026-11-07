@@ -6,8 +6,8 @@ from PIL import Image, ImageOps
 # ============================================================
 # Configuration
 # ============================================================
-TOOL_ROOT = Path(__file__).resolve().parents[1]
-WORKSPACE_DIR = TOOL_ROOT / "workspace"
+SCRIPT_DIR = Path(__file__).resolve().parent
+WORKSPACE_DIR = SCRIPT_DIR / "workspace"
 RAW_DATASET_DIR = WORKSPACE_DIR / "photos"
 OUTPUT_DATASET_DIR = WORKSPACE_DIR / "traffic_sign_dataset"
 
@@ -61,10 +61,6 @@ def process_class(class_name: str):
     """
     input_class_dir = RAW_DATASET_DIR / class_name
 
-    if not input_class_dir.exists():
-        print(f"WARNING: Folder not found: {input_class_dir}")
-        return
-
     image_paths = [
         p for p in input_class_dir.iterdir()
         if p.suffix.lower() in VALID_EXTENSIONS
@@ -88,6 +84,28 @@ def process_class(class_name: str):
 
 
 def main():
+    invalid_classes = []
+    for class_name in CLASSES:
+        input_class_dir = RAW_DATASET_DIR / class_name
+        image_count = (
+            sum(
+                1
+                for path in input_class_dir.iterdir()
+                if path.is_file() and path.suffix.lower() in VALID_EXTENSIONS
+            )
+            if input_class_dir.is_dir()
+            else 0
+        )
+        if image_count < 2:
+            invalid_classes.append(f"{class_name} ({image_count} images)")
+
+    if invalid_classes:
+        raise SystemExit(
+            "Error: at least two images are required for every class before "
+            "creating training and validation splits. Check: "
+            + ", ".join(invalid_classes)
+        )
+
     if OUTPUT_DATASET_DIR.exists():
         print(f"Removing existing folder: {OUTPUT_DATASET_DIR}")
         shutil.rmtree(OUTPUT_DATASET_DIR)
